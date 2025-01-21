@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.2.0] - 2025-01-21
+### Changed
+- Enhanced XML documentation comments for PageContentElement class properties
+- Updated README with detailed examples of table JSON structure
+
 ## [1.1.0] - 2024-08-23
 ### Changed
 - Updated the Newtonsoft.Json package to version 13.0.3.
