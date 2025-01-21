@@ -26,7 +26,7 @@ public class PageContentElement
     /// Text content for Paragraph, Header, or Footer elements.
     /// </summary>
     /// <example>This is an example text.</example>
-        [UIHint(nameof(ContentType), "", ElementType.Paragraph, ElementType.Header, ElementType.Footer)]
+    [UIHint(nameof(ContentType), "", ElementType.Paragraph, ElementType.Header, ElementType.Footer)]
     [DisplayFormat(DataFormatString = "Text")]
     public string Text { get; set; }
 
