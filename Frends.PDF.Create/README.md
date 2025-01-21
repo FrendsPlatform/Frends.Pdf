@@ -16,6 +16,84 @@ Windows based graphics in Linux. Installing those packages is only availably on 
 
 You can install the task via FRENDS UI Task View or you can find the nuget package from the following nuget feed 'Insert nuget feed here'.
 
+# Document Content
+
+Table Field
+
+The Table field accepts JSON to define the structure and content of a table in the PDF.
+
+Simple table example:
+
+{
+  "HasHeaderRow": true,
+  "TableType": "Table",
+  "StyleSettings": {
+    "FontFamily": "Times New Roman",
+    "FontSizeInPt": 9.0,
+    "FontStyle": "Regular",
+    "BorderWidthInPt": 0.5,
+    "BorderStyle": "All"
+  },
+  "Columns": [
+    {
+      "Name": "Name",
+      "WidthInCm": 6
+    },
+    {
+      "Name": "Age",
+      "WidthInCm": 3
+    }
+  ],
+  "RowData": [
+    {
+      "Name": "Alice",
+      "Age": "30"
+    }
+  ]
+}
+
+Example of table placed in footer with a different column types (Text, Image, Page Number):
+
+{
+  "HasHeaderRow": true,
+  "TableType": "Footer",
+  "StyleSettings": {
+    "FontFamily": "Arial",
+    "FontSizeInPt": 9.0,
+    "FontStyle": "Bold",
+    "LineSpacingInPt": 0.0,
+    "SpacingBeforeInPt": 0.0,
+    "SpacingAfterInPt": 0.0,
+    "BorderWidthInPt": 0.5,
+    "BorderStyle": "Top"
+  },
+  "Columns": [
+    {
+      "Name": "Product",
+      "WidthInCm": 5,
+      "Type": "Text"
+    },
+    {
+      "Name": "Image",
+      "WidthInCm": 5,
+      "Type": "Image"
+    },
+    {
+      "Name": "Page Number",
+      "WidthInCm": 4,
+      "Type": "PageNum"
+    }
+  ],
+  "RowData": [
+    {
+      "Product": "Laptop",
+      "Image": "C:\\images\\laptop.jpg",
+      "PageNumber": "{PageNumber}"
+    }
+  ]
+}
+
+
 # Building
 
 Clone a copy of the repo.
