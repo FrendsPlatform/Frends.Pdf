@@ -10,7 +10,7 @@ Frends task for creating PDF file.
 
 To use the task in Linux agent, you need to install packages `libgdiplus`, `apt-utils` and `libc6-dev`,
 since the task uses Windows-based graphics to draw elements to the PDF-file. These packages will emulate
-Windows based graphics in Linux. Installing those packages is only availably on on-premises agent.
+Windows based graphics in Linux. Installing those packages is only available on on-premises agent.
 
 # Installing
 
