@@ -1,0 +1,21 @@
+using System;
+
+namespace Frends.Pdf.MergeDocuments.Definitions;
+
+/// <summary>
+/// Error that occurred during the task.
+/// </summary>
+public class Error
+{
+    /// <summary>
+    /// Summary of the error.
+    /// </summary>
+    /// <example>Unable to merge pdfs.</example>
+    public string Message { get; set; }
+
+    /// <summary>
+    /// Additional information about the error.
+    /// </summary>
+    /// <example>object { Exception Exception }</example>
+    public Exception Exception { get; set; }
+}

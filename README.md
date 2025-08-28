@@ -5,6 +5,7 @@ Frends tasks for PDF-related operations.
 # Tasks
 
 - [Frends.PDF.Create](Frends.PDF.Create/README.md)
+- [Frends.Pdf.MergeDocuments](Frends.Pdf.MergeDocuments/README.md)
 
 # Contributing
 When contributing to this repository, please first discuss the change you wish to make via issue, email, or any other method with the owners of this repository before making a change.
