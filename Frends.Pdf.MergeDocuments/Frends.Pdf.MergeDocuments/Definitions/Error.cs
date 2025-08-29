@@ -16,6 +16,6 @@ public class Error
     /// <summary>
     /// Additional information about the error.
     /// </summary>
-    /// <example>object { Exception Exception }</example>
+    /// <example>object { Exception AdditionalInfo }</example>
     public Exception AdditionalInfo { get; set; }
 }

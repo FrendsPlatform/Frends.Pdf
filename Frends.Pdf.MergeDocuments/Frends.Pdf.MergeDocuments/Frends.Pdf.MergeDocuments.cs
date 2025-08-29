@@ -20,7 +20,7 @@ public static class Pdf
     /// <param name="input">Information about input and output paths</param>
     /// <param name="options">Exception settings</param>
     /// <param name="cancellationToken">A cancellation token provided by Frends Platform.</param>
-    /// <returns>object { bool Success, object Error { string Message, exception Exception } }</returns>
+    /// <returns>object { bool Success, object Error { string Message, exception AdditionalInfo } }</returns>
     public static Result MergeDocuments(
         [PropertyTab] Input input,
         [PropertyTab] Options options,
