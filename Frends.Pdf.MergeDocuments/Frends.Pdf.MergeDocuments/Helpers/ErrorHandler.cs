@@ -35,7 +35,7 @@ public static class ErrorHandler
             Error = new Error
             {
                 Message = message,
-                Exception = exception,
+                AdditionalInfo = exception,
             },
         };
     }

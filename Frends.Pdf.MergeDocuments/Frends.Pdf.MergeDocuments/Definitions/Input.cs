@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 
 namespace Frends.Pdf.MergeDocuments.Definitions;
 
@@ -15,9 +14,9 @@ public class Input
     public string[] InputFilePaths { get; set; }
 
     /// <summary>
-    /// path where to save merged PDF.
+    /// Path where to save merged Pdf.
     /// </summary>
-    /// <example>2</example>
-    [DefaultValue("C:/files/merged.pdf")]
+    /// <example>"C:/files/merged.pdf"</example>
+    [DefaultValue("")]
     public string DestinationFilePath { get; set; }
 }

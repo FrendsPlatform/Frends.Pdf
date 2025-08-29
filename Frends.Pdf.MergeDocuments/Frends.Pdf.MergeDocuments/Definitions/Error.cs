@@ -10,12 +10,12 @@ public class Error
     /// <summary>
     /// Summary of the error.
     /// </summary>
-    /// <example>Unable to merge pdfs.</example>
+    /// <example>Unable to merge Pdfs.</example>
     public string Message { get; set; }
 
     /// <summary>
     /// Additional information about the error.
     /// </summary>
     /// <example>object { Exception Exception }</example>
-    public Exception Exception { get; set; }
+    public Exception AdditionalInfo { get; set; }
 }

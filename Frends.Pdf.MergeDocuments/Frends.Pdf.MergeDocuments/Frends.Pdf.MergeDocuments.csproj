@@ -11,7 +11,7 @@
         <PackageTags>Frends</PackageTags>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <Description>Task to merge multiple PDF documents into one.</Description>
+        <Description>Task to merge multiple Pdf documents into one.</Description>
         <PackageProjectUrl>https://frends.com/</PackageProjectUrl>
         <RepositoryUrl>https://github.com/FrendsPlatform/Frends.Pdf/tree/main/Frends.Pdf.MergeDocuments</RepositoryUrl>
     </PropertyGroup>

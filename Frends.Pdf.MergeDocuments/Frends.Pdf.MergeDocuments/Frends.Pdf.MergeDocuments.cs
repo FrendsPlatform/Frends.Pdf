@@ -14,10 +14,10 @@ namespace Frends.Pdf.MergeDocuments;
 public static class Pdf
 {
     /// <summary>
-    /// Task to merge multiple PDF documents into one.
+    /// Task to merge multiple Pdf documents into one.
     /// [Documentation](https://tasks.frends.com/tasks/frends-tasks/Frends-Pdf-MergeDocuments)
     /// </summary>
-    /// <param name="input">info about input and output paths</param>
+    /// <param name="input">Information about input and output paths</param>
     /// <param name="options">Exception settings</param>
     /// <param name="cancellationToken">A cancellation token provided by Frends Platform.</param>
     /// <returns>object { bool Success, object Error { string Message, exception Exception } }</returns>

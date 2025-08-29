@@ -1,6 +1,6 @@
 # Frends.Pdf.MergeDocuments
 
-Task to merge multiple PDF documents into one.
+Task to merge multiple Pdf documents into one.
 
 [![MergeDocuments_build](https://github.com/FrendsPlatform/Frends.Pdf/actions/workflows/MergeDocuments_build_and_test_on_main.yml/badge.svg)](https://github.com/FrendsPlatform/Frends.Pdf/actions/workflows/MergeDocuments_build_and_test_on_main.yml)
 ![Coverage](https://app-github-custom-badges.azurewebsites.net/Badge?key=FrendsPlatform/Frends.Pdf/Frends.Pdf.MergeDocuments|main)
