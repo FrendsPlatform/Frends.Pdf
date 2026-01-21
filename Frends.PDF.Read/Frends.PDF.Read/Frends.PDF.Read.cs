@@ -20,7 +20,7 @@ public static class PDF
     /// [Documentation](https://tasks.frends.com/tasks/frends-tasks/Frends-PDF-Read)
     /// </summary>
     /// <param name="input">Essential parameters.</param>
-    /// <param name="options">x.</param>
+    /// <param name="options">Additional parameters for controlling read behavior.</param>
     /// <param name="cancellationToken">A cancellation token provided by Frends Platform.</param>
     /// <returns>object { bool Success, string Json, object Error { string Message, Exception AdditionalInfo } }</returns>
     public static Result Read(

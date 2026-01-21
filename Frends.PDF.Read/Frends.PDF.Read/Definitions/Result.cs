@@ -1,6 +1,4 @@
-﻿using static System.Runtime.InteropServices.JavaScript.JSType;
-
-namespace Frends.PDF.Read.Definitions;
+﻿namespace Frends.PDF.Read.Definitions;
 
 /// <summary>
 /// Result of the task.

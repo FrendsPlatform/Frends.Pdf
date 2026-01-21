@@ -20,7 +20,7 @@
         public byte[] Bytes { get; set; }
 
         /// <summary>
-        ///  Width of image in points.
+        /// Width of image in points.
         /// </summary>
         /// <example>200</example>
         public double Width { get; set; }
