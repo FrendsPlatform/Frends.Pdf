@@ -1,11 +1,12 @@
 using System;
 using System.IO;
 using System.Threading;
-using Frends.PDF.Read;
 using Frends.PDF.Read.Definitions;
 using Frends.PDF.Read.DTOs;
 using Newtonsoft.Json;
 using NUnit.Framework;
+
+namespace Frends.PDF.Read.Tests;
 
 [TestFixture]
 public class UnitTests
