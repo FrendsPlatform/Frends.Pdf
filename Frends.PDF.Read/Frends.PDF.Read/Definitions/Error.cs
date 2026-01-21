@@ -10,7 +10,7 @@ public class Error
     /// <summary>
     /// Summary of the error.
     /// </summary>
-    /// <example>Unable read file.</example>
+    /// <example>Unable to read PDF file.</example>
     public string Message { get; set; }
 
     /// <summary>
