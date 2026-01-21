@@ -9,7 +9,7 @@ public class Result
     /// Initializes a new instance of the <see cref="Result"/> class.
     /// </summary>
     /// <param name="success">True if the operation succeeded.</param>
-    /// <param name="json">The path to the signed file.</param>
+    /// <param name="json">JSON representation of the extracted PDF content.</param>
     /// <param name="error">Error details if the operation failed.</param>
     public Result(bool success, string json, Error error = null)
     {
