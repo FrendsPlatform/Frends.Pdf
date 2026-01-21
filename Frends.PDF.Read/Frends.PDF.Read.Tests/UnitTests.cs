@@ -40,7 +40,7 @@ public class UnitTests
 
         var document = JsonConvert.DeserializeObject<PdfReadDocument>(result.Json);
 
-        Assert.That(result.Success, Is.True)
+        Assert.That(result.Success, Is.True);
         Assert.That(document, Is.Not.Null);
         Assert.That(document.Pages, Is.Not.Null);
         Assert.That(document.Pages.Count, Is.GreaterThan(1));
@@ -61,7 +61,7 @@ public class UnitTests
 
         var document = JsonConvert.DeserializeObject<PdfReadDocument>(result.Json);
 
-        Assert.That(result.Success, Is.True)
+        Assert.That(result.Success, Is.True);
         Assert.That(document.Pages.Count, Is.EqualTo(1));
         Assert.That(string.IsNullOrWhiteSpace(document.Pages[0].Text), Is.False);
         Assert.That(document.Metadata.Author, Is.Not.Null);
@@ -83,7 +83,7 @@ public class UnitTests
             CancellationToken.None);
 
         var document = JsonConvert.DeserializeObject<PdfReadDocument>(result.Json);
-        Assert.That(result.Success, Is.True)
+        Assert.That(result.Success, Is.True);
         Assert.That(document.Pages[0].Images.Count, Is.GreaterThan(0));
         Assert.That(document.Pages[0].Images[0].Bytes.Length, Is.GreaterThan(0));
     }
