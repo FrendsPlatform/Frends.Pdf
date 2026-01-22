@@ -71,7 +71,7 @@ public static class PDF
                             format = "RAW";
                         }
 
-                        pageResult.Images.Add(new PdfReadImage
+                        pageResult.Images!.Add(new PdfReadImage
                         {
                             Format = format,
                             Bytes = bytes,
@@ -84,7 +84,7 @@ public static class PDF
                 result.Pages.Add(pageResult);
             }
 
-            var json = JsonConvert.SerializeObject(result, Newtonsoft.Json.Formatting.Indented);
+            var json = JsonConvert.SerializeObject(result, Formatting.Indented);
             return new Result(true, json);
         }
         catch (Exception ex)

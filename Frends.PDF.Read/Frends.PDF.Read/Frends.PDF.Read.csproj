@@ -32,6 +32,7 @@
     <ItemGroup>
         <Content Include="migration.json" PackagePath="/" Pack="true" />
         <Content Include="../CHANGELOG.md" PackagePath="/" Pack="true" />
+        <Content Include="../LICENSE" PackagePath="/" Pack="true" />
         <AdditionalFiles Include="FrendsTaskMetadata.json" PackagePath="/" Pack="true" />
     </ItemGroup>
 </Project>

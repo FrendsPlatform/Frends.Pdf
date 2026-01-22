@@ -2,7 +2,7 @@
 
 Frends task to read PDF documents.
 
-[![Read_build](https://github.com/FrendsPlatform/Frends.PDF/actions/workflows/Read_build_and_test_on_main.yml/badge.svg)](https://github.com/FrendsPlatform/Frends.PDF/actions/workflows/Read_build_and_test_on_main.yml)
+[![Read_build](https://github.com/FrendsPlatform/Frends.PDF/actions/workflows/Read_test_on_main.yml/badge.svg)](https://github.com/FrendsPlatform/Frends.PDF/actions/workflows/Read_test_on_main.yml)
 ![Coverage](https://app-github-custom-badges.azurewebsites.net/Badge?key=FrendsPlatform/Frends.PDF/Frends.PDF.Read|main)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
