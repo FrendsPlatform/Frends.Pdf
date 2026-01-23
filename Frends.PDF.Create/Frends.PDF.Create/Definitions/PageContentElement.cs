@@ -9,7 +9,7 @@ namespace Frends.PDF.Create.Definitions;
 public class PageContentElement
 {
     /// <summary>
-    /// Type of content element.
+    /// Specifies the type of content for this element (e.g., Paragraph, Image, Header).
     /// </summary>
     /// <example>Paragraph</example>
     [DefaultValue(ElementType.Paragraph)]
@@ -23,7 +23,7 @@ public class PageContentElement
     public string ImagePath { get; set; }
 
     /// <summary>
-    /// Text written to document.
+    /// Text content for Paragraph, Header, or Footer elements.
     /// </summary>
     /// <example>This is an example text.</example>
     [UIHint(nameof(ContentType), "", ElementType.Paragraph, ElementType.Header, ElementType.Footer)]
@@ -31,7 +31,7 @@ public class PageContentElement
     public string Text { get; set; }
 
     /// <summary>
-    /// Font family name.
+    /// Font family for the text. Applies to Paragraph, Header, and Footer elements.
     /// </summary>
     /// <example>Times New Roman</example>
     [UIHint(nameof(ContentType), "", ElementType.Paragraph, ElementType.Header, ElementType.Footer)]
@@ -40,7 +40,7 @@ public class PageContentElement
     public string FontFamily { get; set; }
 
     /// <summary>
-    /// Font size in points.
+    /// Font size in points for the text content.
     /// </summary>
     /// <example>11</example>
     [UIHint(nameof(ContentType), "", ElementType.Paragraph, ElementType.Header, ElementType.Footer)]
@@ -48,7 +48,7 @@ public class PageContentElement
     public int FontSize { get; set; }
 
     /// <summary>
-    /// Font style.
+    /// Font style, such as Regular, Bold, or Italic.
     /// </summary>
     /// <example>Regular</example>
     [UIHint(nameof(ContentType), "", ElementType.Paragraph, ElementType.Header, ElementType.Footer)]
@@ -65,7 +65,7 @@ public class PageContentElement
 
 
     /// <summary>
-    /// Text alignment.
+    /// Specifies the alignment of the text (e.g., Left, Center, Right).
     /// </summary>
     /// <example>Left</example>
     [UIHint(nameof(ContentType), "", ElementType.Paragraph, ElementType.Header, ElementType.Footer)]
@@ -125,9 +125,10 @@ public class PageContentElement
     public double ImageHeightInCm { get; set; }
 
     /// <summary>
-    /// Table data in JSON.
+    /// Table data in JSON. For detailed example of this JSON,
+    /// please refer to the README documentation.
     /// </summary>
-    /// <example>{ "HasHeaderRow": true, "TableType": "Table", "Columns": [ { "Name": "Sarake 1", "WidthInCm": 21, "HeightInCm": 0, "Type": "Text" } ], "RowData": [] }</example>
+    /// <example>{"HasHeaderRow":true,"TableType":"Table","StyleSettings":{"FontFamily":"Times New Roman","FontSizeInPt":9.0,"FontStyle":"Regular","BorderWidthInPt":0.5,"BorderStyle":"All"},"Columns":[{"Name":"Name","WidthInCm":6},{"Name":"Age","WidthInCm":3}],"RowData":[{"Name":"Alice","Age":"30"}]}</example>
     [UIHint(nameof(ContentType), "", ElementType.Table)]
     [DisplayFormat(DataFormatString = "Json")]
     [DefaultValue("{}")]
