@@ -32,3 +32,11 @@ Run the tests
 
 ### StyleCop.Analyzers Version
 This project uses StyleCop.Analyzers 1.2.0-beta.556, as recommended by the author, to get the latest fixes and improvements not available in the last stable release.
+
+### License
+This project includes third-party software:
+
+PdfPig
+License: Apache License, Version 2.0
+Reason included: Required by PdfPig NuGet package
+Project: https://github.com/UglyToad/PdfPig
