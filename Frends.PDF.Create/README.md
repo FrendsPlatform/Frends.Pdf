@@ -1,10 +1,10 @@
-# Frends.PDF.Create
-Frends task for creating PDF file.
+# Frends.Pdf.Create
+Frends task for creating Pdf file.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT) 
-[![Build](https://github.com/FrendsPlatform/Frends.PDF/actions/workflows/Create_build_and_test_on_main.yml/badge.svg)](https://github.com/FrendsPlatform/Frends.PDF/actions)
-![MyGet](https://img.shields.io/myget/frends-tasks/v/Frends.PDF.Create)
-![Coverage](https://app-github-custom-badges.azurewebsites.net/Badge?key=FrendsPlatform/Frends.PDF/Frends.PDF.Create|main)
+[![Build](https://github.com/FrendsPlatform/Frends.Pdf/actions/workflows/Create_build_and_test_on_main.yml/badge.svg)](https://github.com/FrendsPlatform/Frends.Pdf/actions)
+![MyGet](https://img.shields.io/myget/frends-tasks/v/Frends.Pdf.Create)
+![Coverage](https://app-github-custom-badges.azurewebsites.net/Badge?key=FrendsPlatform/Frends.Pdf/Frends.Pdf.Create|main)
 
 # Requirements
 
@@ -20,11 +20,11 @@ You can install the task via FRENDS UI Task View or you can find the nuget packa
 
 Clone a copy of the repo.
 
-`git clone https://github.com/FrendsPlatform/Frends.PDF`
+`git clone https://github.com/FrendsPlatform/Frends.Pdf`
 
 Go to the task directory.
 
-`cd Frends.PDF/Frends.PDF.Create`
+`cd Frends.Pdf/Frends.Pdf.Create`
 
 Build the solution.
 

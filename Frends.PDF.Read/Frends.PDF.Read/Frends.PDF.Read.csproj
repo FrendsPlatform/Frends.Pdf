@@ -10,9 +10,9 @@
         <PackageTags>Frends</PackageTags>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <Description>Frends task to read PDF documents.</Description>
+        <Description>Frends task to read Pdf documents.</Description>
         <PackageProjectUrl>https://frends.com/</PackageProjectUrl>
-        <RepositoryUrl>https://github.com/FrendsPlatform/Frends.PDF/tree/main/Frends.PDF.Read</RepositoryUrl>
+        <RepositoryUrl>https://github.com/FrendsPlatform/Frends.Pdf/tree/main/Frends.Pdf.Read</RepositoryUrl>
         <Nullable>disable</Nullable>
     </PropertyGroup>
 

@@ -1,4 +1,4 @@
-﻿namespace Frends.PDF.Create.Definitions;
+﻿namespace Frends.Pdf.Create.Definitions;
 
 /// <summary>
 /// Definition-class for table columns.

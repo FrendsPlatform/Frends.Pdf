@@ -1,4 +1,4 @@
-﻿namespace Frends.PDF.Create.Definitions;
+﻿namespace Frends.Pdf.Create.Definitions;
 
 /// <summary>
 /// Result-class for the task.

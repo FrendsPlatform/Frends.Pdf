@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Frends.PDF.Read.DTOs
+namespace Frends.Pdf.Read.DTOs
 {
     /// <summary>
     /// Represents the extracted contents of a PDF document.

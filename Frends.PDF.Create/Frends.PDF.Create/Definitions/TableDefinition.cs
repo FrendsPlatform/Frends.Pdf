@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Frends.PDF.Create.Definitions;
+namespace Frends.Pdf.Create.Definitions;
 
 /// <summary>
 /// Definitions for whole table.

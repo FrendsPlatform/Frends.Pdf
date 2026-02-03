@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Frends.PDF.Create.Definitions;
+namespace Frends.Pdf.Create.Definitions;
 
 /// <summary>
 /// Class for wrapping page contents together.

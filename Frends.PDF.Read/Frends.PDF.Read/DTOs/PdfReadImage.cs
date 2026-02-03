@@ -1,4 +1,4 @@
-﻿namespace Frends.PDF.Read.DTOs
+﻿namespace Frends.Pdf.Read.DTOs
 {
     /// <summary>
     /// Represents an image extracted from a PDF page.

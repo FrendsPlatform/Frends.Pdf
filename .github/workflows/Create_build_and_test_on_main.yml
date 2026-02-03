@@ -2,16 +2,16 @@ name: Create Build main
 
 on:
   push:
-    branches:    
+    branches:
       - main
     paths:
-      - 'Frends.PDF.Create/**'
+      - 'Frends.Pdf.Create/**'
   workflow_dispatch:
 
 jobs:
   build:
     uses: FrendsPlatform/FrendsTasks/.github/workflows/build_main.yml@main
     with:
-      workdir: Frends.PDF.Create
+      workdir: Frends.Pdf.Create
     secrets:
       badge_service_api_key: ${{ secrets.BADGE_SERVICE_API_KEY }}

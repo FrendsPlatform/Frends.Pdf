@@ -1,7 +1,7 @@
 using System;
-using Frends.PDF.Read.Definitions;
+using Frends.Pdf.Read.Definitions;
 
-namespace Frends.PDF.Read.Helpers;
+namespace Frends.Pdf.Read.Helpers;
 
 internal static class ErrorHandler
 {

@@ -1,9 +1,9 @@
-﻿using Frends.PDF.Create.Definitions;
-using NUnit.Framework;
-using System;
+﻿using System;
 using System.IO;
+using Frends.Pdf.Create.Definitions;
+using NUnit.Framework;
 
-namespace Frends.PDF.Create.Tests;
+namespace Frends.Pdf.Create.Tests;
 
 [TestFixture]
 public class UnitTests
@@ -52,7 +52,7 @@ public class UnitTests
     private Result CallCreatePdf(PageContentElement[] contents, FileProperties properties = null)
     {
         var fileProperties = properties == null ? _fileProperties : properties;
-        return PDF.Create(fileProperties, _docSettings, new DocumentContent { Contents = contents }, _options);
+        return Pdf.Create(fileProperties, _docSettings, new DocumentContent { Contents = contents }, _options);
     }
 
     [Test]
@@ -166,7 +166,7 @@ with some tab
             ThrowErrorOnFailure = false
         };
 
-        PDF.Create(_fileProperties, _docSettings, new DocumentContent { Contents = new PageContentElement[] { table1 } }, options);
+        Pdf.Create(_fileProperties, _docSettings, new DocumentContent { Contents = new PageContentElement[] { table1 } }, options);
 
         Assert.IsFalse(File.Exists(_destinationFullPath));
     }
@@ -190,7 +190,7 @@ with some tab
             Size = PageSizeEnum.A4
         };
 
-        var result = PDF.Create(fileProperties, settings, new DocumentContent { Contents = new PageContentElement[] { _paragraphContent } }, _options);
+        var result = Pdf.Create(fileProperties, settings, new DocumentContent { Contents = new PageContentElement[] { _paragraphContent } }, _options);
 
         Assert.IsTrue(File.Exists(_destinationFullPath));
         Assert.IsTrue(result.Success);
@@ -198,7 +198,7 @@ with some tab
         settings.Title = "";
         settings.Author = "";
 
-        result = PDF.Create(fileProperties, settings, new DocumentContent { Contents = new PageContentElement[] { _paragraphContent } }, _options);
+        result = Pdf.Create(fileProperties, settings, new DocumentContent { Contents = new PageContentElement[] { _paragraphContent } }, _options);
 
         Assert.IsTrue(File.Exists(_destinationFullPath));
         Assert.IsTrue(result.Success);
@@ -206,7 +206,7 @@ with some tab
         settings.Title = "Title";
         settings.Author = "Tester";
 
-        result = PDF.Create(fileProperties, settings, new DocumentContent { Contents = new PageContentElement[] { _paragraphContent } }, _options);
+        result = Pdf.Create(fileProperties, settings, new DocumentContent { Contents = new PageContentElement[] { _paragraphContent } }, _options);
 
         Assert.IsTrue(File.Exists(_destinationFullPath));
         Assert.IsTrue(result.Success);

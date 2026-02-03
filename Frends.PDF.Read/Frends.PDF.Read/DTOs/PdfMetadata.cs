@@ -1,4 +1,4 @@
-﻿namespace Frends.PDF.Read.DTOs
+﻿namespace Frends.Pdf.Read.DTOs
 {
     /// <summary>
     /// Contains metadata information of a PDF document.

@@ -2,22 +2,22 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading;
-using Frends.PDF.Read.Definitions;
-using Frends.PDF.Read.DTOs;
-using Frends.PDF.Read.Helpers;
+using Frends.Pdf.Read.Definitions;
+using Frends.Pdf.Read.DTOs;
+using Frends.Pdf.Read.Helpers;
 using Newtonsoft.Json;
 using UglyToad.PdfPig;
 
-namespace Frends.PDF.Read;
+namespace Frends.Pdf.Read;
 
 /// <summary>
 /// Task Class for PDF operations.
 /// </summary>
-public static class PDF
+public static class Pdf
 {
     /// <summary>
-    /// Frends task to read PDF documents
-    /// [Documentation](https://tasks.frends.com/tasks/frends-tasks/Frends-PDF-Read)
+    /// Frends task to read Pdf documents
+    /// [Documentation](https://tasks.frends.com/tasks/frends-tasks/Frends-Pdf-Read)
     /// </summary>
     /// <param name="input">Essential parameters.</param>
     /// <param name="options">Additional parameters for controlling read behavior.</param>

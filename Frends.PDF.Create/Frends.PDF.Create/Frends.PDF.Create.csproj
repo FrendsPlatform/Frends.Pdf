@@ -10,9 +10,9 @@
 	<PackageTags>Frends</PackageTags>
 	<PackageLicenseExpression>MIT</PackageLicenseExpression>
 	<GenerateDocumentationFile>true</GenerateDocumentationFile>
-	<Description>Frends task to create PDF documents.</Description>
+	<Description>Frends task to create Pdf documents.</Description>
 	<PackageProjectUrl>https://frends.com/</PackageProjectUrl>
-	<RepositoryUrl>https://github.com/FrendsPlatform/Frends.PDF/</RepositoryUrl>
+	<RepositoryUrl>https://github.com/FrendsPlatform/Frends.Pdf/</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
@@ -20,7 +20,7 @@
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
   </ItemGroup>
-  
+
   <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />

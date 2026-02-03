@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace Frends.PDF.Create.Definitions;
+namespace Frends.Pdf.Create.Definitions;
 
 /// <summary>
 /// Class for adding settings for the PDF document.

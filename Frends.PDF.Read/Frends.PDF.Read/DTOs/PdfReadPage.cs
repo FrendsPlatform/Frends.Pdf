@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Frends.PDF.Read.DTOs
+namespace Frends.Pdf.Read.DTOs
 {
     /// <summary>
     /// Represents a single page of a PDF document.

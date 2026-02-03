@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading;
-using Frends.PDF.Read.Definitions;
+using Frends.Pdf.Read.Definitions;
 using NUnit.Framework;
 
-namespace Frends.PDF.Read.Tests;
+namespace Frends.Pdf.Read.Tests;
 
 [TestFixture]
 public class ErrorHandlerTest
@@ -14,7 +14,7 @@ public class ErrorHandlerTest
     public void Should_Throw_Error_When_ThrowErrorOnFailure_Is_True()
     {
         var ex = Assert.Throws<Exception>(() =>
-           PDF.Read(DefaultInput(), DefaultOptions(), CancellationToken.None));
+           Pdf.Read(DefaultInput(), DefaultOptions(), CancellationToken.None));
         Assert.That(ex, Is.Not.Null);
     }
 
@@ -23,7 +23,7 @@ public class ErrorHandlerTest
     {
         var options = DefaultOptions();
         options.ThrowErrorOnFailure = false;
-        var result = PDF.Read(DefaultInput(), options, CancellationToken.None);
+        var result = Pdf.Read(DefaultInput(), options, CancellationToken.None);
         Assert.That(result.Success, Is.False);
     }
 
@@ -33,7 +33,7 @@ public class ErrorHandlerTest
         var options = DefaultOptions();
         options.ErrorMessageOnFailure = CustomErrorMessage;
         var ex = Assert.Throws<Exception>(() =>
-            PDF.Read(DefaultInput(), options, CancellationToken.None));
+            Pdf.Read(DefaultInput(), options, CancellationToken.None));
         Assert.That(ex, Is.Not.Null);
         Assert.That(ex.Message, Contains.Substring(CustomErrorMessage));
     }

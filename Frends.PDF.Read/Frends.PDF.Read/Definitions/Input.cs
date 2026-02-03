@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace Frends.PDF.Read.Definitions;
+namespace Frends.Pdf.Read.Definitions;
 
 /// <summary>
 /// Essential parameters.

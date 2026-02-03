@@ -1,4 +1,4 @@
-﻿namespace Frends.PDF.Create.Definitions;
+﻿namespace Frends.Pdf.Create.Definitions;
 
 /// <summary>
 /// Actions if the output document already exists.

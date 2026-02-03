@@ -1,4 +1,4 @@
-﻿namespace Frends.PDF.Read.Definitions;
+﻿namespace Frends.Pdf.Read.Definitions;
 
 /// <summary>
 /// Result of the task.

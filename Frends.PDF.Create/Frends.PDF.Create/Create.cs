@@ -1,29 +1,29 @@
-﻿using Frends.PDF.Create.Definitions;
-using MigraDoc.DocumentObjectModel;
-using MigraDoc.DocumentObjectModel.Shapes;
-using MigraDoc.DocumentObjectModel.Tables;
-using MigraDoc.Rendering;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Frends.Pdf.Create.Definitions;
+using MigraDoc.DocumentObjectModel;
+using MigraDoc.DocumentObjectModel.Shapes;
+using MigraDoc.DocumentObjectModel.Tables;
+using MigraDoc.Rendering;
+using Newtonsoft.Json;
 
-namespace Frends.PDF.Create;
+namespace Frends.Pdf.Create;
 
 /// <summary>
 /// Task class.
 /// </summary>
-public class PDF
+public class Pdf
 {
     /// <summary>
     /// Create PDF document from given content.
     /// [Documentation](https://tasks.frends.com/tasks/frends-tasks/Frends.PDF.Create)
     /// Requirements:
-    /// To use the task in Linux agent, you need to install packages libgdiplus, apt-utils and libc6-dev, 
-    /// since the task uses Windows-based graphics to draw elements to the PDF-file. These packages will 
+    /// To use the task in Linux agent, you need to install packages libgdiplus, apt-utils and libc6-dev,
+    /// since the task uses Windows-based graphics to draw elements to the PDF-file. These packages will
     /// emulate Windows based graphics in Linux. Installing those packages is only availably on on-premises agent.
     /// </summary>
     /// <param name="outputFile"></param>

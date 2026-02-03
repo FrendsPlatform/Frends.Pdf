@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Frends.PDF.Create;
+namespace Frends.Pdf.Create;
 
 // Extension class for extending class methods.
 static class Extensions

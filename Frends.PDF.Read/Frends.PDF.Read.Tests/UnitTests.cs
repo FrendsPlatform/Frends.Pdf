@@ -1,12 +1,12 @@
 using System;
 using System.IO;
 using System.Threading;
-using Frends.PDF.Read.Definitions;
-using Frends.PDF.Read.DTOs;
+using Frends.Pdf.Read.Definitions;
+using Frends.Pdf.Read.DTOs;
 using Newtonsoft.Json;
 using NUnit.Framework;
 
-namespace Frends.PDF.Read.Tests;
+namespace Frends.Pdf.Read.Tests;
 
 [TestFixture]
 public class UnitTests
@@ -28,7 +28,7 @@ public class UnitTests
     [Test]
     public void ReadPdf_AllPages_ReturnsPagesWithMetadata()
     {
-        var result = PDF.Read(
+        var result = Pdf.Read(
             new Input
             {
                 FilePath = Path.Combine(testDataFolder, "multi-page.pdf"),
@@ -51,7 +51,7 @@ public class UnitTests
     [Test]
     public void ReadPdf_SinglePagePdf_ReturnsOnePageWithMetadata()
     {
-        var result = PDF.Read(
+        var result = Pdf.Read(
             new Input
             {
                 FilePath = Path.Combine(testDataFolder, "single-page.pdf"),
@@ -71,7 +71,7 @@ public class UnitTests
     [Test]
     public void ReadPdf_IncludeImages()
     {
-        var result = PDF.Read(
+        var result = Pdf.Read(
             new Input
             {
                 FilePath = Path.Combine(testDataFolder, "Png_image.pdf"),
