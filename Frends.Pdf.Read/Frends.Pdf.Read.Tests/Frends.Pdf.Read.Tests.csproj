@@ -6,7 +6,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Frends.PDF.Read\Frends.PDF.Read.csproj" />
+        <ProjectReference Include="..\Frends.Pdf.Read\Frends.Pdf.Read.csproj" />
     </ItemGroup>
 
     <ItemGroup>

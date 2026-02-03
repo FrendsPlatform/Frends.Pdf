@@ -18,6 +18,6 @@
 		<PrivateAssets>all</PrivateAssets>
 		<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	</PackageReference>
-	<ProjectReference Include="..\Frends.PDF.Create\Frends.PDF.Create.csproj" />
+	<ProjectReference Include="..\Frends.Pdf.Create\Frends.Pdf.Create.csproj" />
   </ItemGroup>
 </Project>
