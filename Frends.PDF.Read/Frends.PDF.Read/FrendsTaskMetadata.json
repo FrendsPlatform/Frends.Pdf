@@ -1,7 +1,7 @@
 ﻿{
   "Tasks": [
     {
-      "TaskMethod": "Frends.PDF.Read.PDF.Read"
+      "TaskMethod": "Frends.Pdf.Read.Pdf.Read"
     }
   ]
 }
