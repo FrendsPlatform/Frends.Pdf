@@ -11,7 +11,7 @@ using UglyToad.PdfPig;
 namespace Frends.Pdf.Read;
 
 /// <summary>
-/// Task Class for PDF operations.
+/// Task Class for Pdf operations.
 /// </summary>
 public static class Pdf
 {

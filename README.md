@@ -1,12 +1,12 @@
-# Frends.PDF
+# Frends.Pdf
 
-Frends tasks for PDF-related operations.
+Frends tasks for Pdf-related operations.
 
 # Tasks
 
-- [Frends.PDF.Create](Frends.PDF.Create/README.md)
+- [Frends.Pdf.Create](Frends.Pdf.Create/README.md)
 - [Frends.Pdf.MergeDocuments](Frends.Pdf.MergeDocuments/README.md)
-- [Frends.PDF.Read](Frends.PDF.Read/README.md)
+- [Frends.Pdf.Read](Frends.Pdf.Read/README.md)
 
 # Contributing
 When contributing to this repository, please first discuss the change you wish to make via issue, email, or any other method with the owners of this repository before making a change.
