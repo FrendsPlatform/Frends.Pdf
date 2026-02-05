@@ -46,7 +46,8 @@ public class UnitTests
     [TearDown]
     public void TestTearDown()
     {
-        Directory.Delete(_folder, true);
+        if (Directory.Exists(_folder))
+            Directory.Delete(_folder, true);
     }
 
     private Result CallCreatePdf(PageContentElement[] contents, FileProperties properties = null)
