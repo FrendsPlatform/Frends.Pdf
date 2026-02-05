@@ -19,7 +19,7 @@ public class FileProperties
     /// <summary>
     /// Filename for created PDF file.
     /// </summary>
-    /// /// <example>output.pdf</example>
+    /// <example>output.pdf</example>
     [DisplayFormat(DataFormatString = "Text")]
     [DefaultValue("example_file.pdf")]
     public string FileName { get; set; }
