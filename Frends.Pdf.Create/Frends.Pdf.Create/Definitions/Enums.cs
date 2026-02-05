@@ -50,7 +50,7 @@ public enum PageOrientationEnum
 }
 #pragma warning restore CS1591
 
-`#pragma` warning disable CS1591 // Self-explanatory enums.
+#pragma warning disable CS1591 // Self-explanatory enums.
 /// <summary>
 /// Element which will be added to the document.
 /// </summary>
