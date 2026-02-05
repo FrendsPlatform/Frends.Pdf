@@ -11,8 +11,8 @@ public class UnitTests
     private static readonly string _fileName = "test_output.pdf";
     private static readonly string _folder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"../../../TestOutput");
     private static readonly string _destinationFullPath = Path.Combine(_folder, _fileName);
-    private static readonly FileProperties _fileProperties = new() { Directory = _folder, FileName = _fileName, FileExistsAction = FileExistsActionEnum.Error, Unicode = true };
-    private static readonly DocumentSettings _docSettings = new() { MarginBottomInCm = 2, MarginLeftInCm = 2.5, MarginRightInCm = 2.5, MarginTopInCm = 5, Orientation = PageOrientationEnum.Portrait, Size = PageSizeEnum.A4 };
+    private FileProperties _fileProperties;
+    private DocumentSettings _docSettings;
 
     private PageContentElement _header;
     private PageContentElement _footer;
@@ -25,11 +25,13 @@ public class UnitTests
     [SetUp]
     public void TestSetup()
     {
-
         if (!Directory.Exists(_folder))
         {
             Directory.CreateDirectory(_folder);
         }
+
+        _fileProperties = new FileProperties { Directory = _folder, FileName = _fileName, FileExistsAction = FileExistsActionEnum.Error, Unicode = true };
+        _docSettings = new DocumentSettings { MarginBottomInCm = 2, MarginLeftInCm = 2.5, MarginRightInCm = 2.5, MarginTopInCm = 5, Orientation = PageOrientationEnum.Portrait, Size = PageSizeEnum.A4 };
         var logoPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"../../../Files/logo.png");
         _header = new PageContentElement { ContentType = ElementType.Header, FontFamily = "Times New Roman", FontSize = 8, FontStyle = FontStyleEnum.Regular, LineSpacingInPt = 11, ParagraphAlignment = ParagraphAlignmentEnum.Right, SpacingAfterInPt = 0, SpacingBeforeInPt = 8, ImagePath = logoPath, HeaderFooterStyle = HeaderFooterStyleEnum.LogoText, BorderWidthInPt = 0.5, ImageHeightInCm = 0.5 };
         _footer = new PageContentElement { ContentType = ElementType.Footer, FontFamily = "Times New Roman", FontSize = 8, FontStyle = FontStyleEnum.Regular, LineSpacingInPt = 11, ParagraphAlignment = ParagraphAlignmentEnum.Center, SpacingAfterInPt = 0, SpacingBeforeInPt = 8, HeaderFooterStyle = HeaderFooterStyleEnum.TextPagenum, BorderWidthInPt = 0.0 };
