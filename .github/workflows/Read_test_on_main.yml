@@ -7,14 +7,14 @@ on:
     branches:
       - main
     paths:
-      - 'Frends.PDF.Read/**'
+      - 'Frends.Pdf.Read/**'
   workflow_dispatch:
 
 jobs:
   build:
     uses: FrendsPlatform/FrendsTasks/.github/workflows/linux_build_main.yml@main
     with:
-      workdir: Frends.PDF.Read
+      workdir: Frends.Pdf.Read
       dotnet_version: 8.0.x
       strict_analyzers: true
     secrets:
