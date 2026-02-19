@@ -5,11 +5,14 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Frends.Pdf.Create.Definitions;
+using Frends.Pdf.Create.Helpers;
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.DocumentObjectModel.Shapes;
 using MigraDoc.DocumentObjectModel.Tables;
 using MigraDoc.Rendering;
 using Newtonsoft.Json;
+using PdfSharp.Drawing;
+using PdfSharp.Fonts;
 
 namespace Frends.Pdf.Create;
 
@@ -40,6 +43,7 @@ public class Pdf
     {
         try
         {
+            GlobalFontSettings.FontResolver = new FileFontResolver();
             var document = new Document();
             if (!string.IsNullOrWhiteSpace(documentSettings.Title)) document.Info.Title = documentSettings.Title;
             if (!string.IsNullOrWhiteSpace(documentSettings.Author)) document.Info.Author = documentSettings.Author;
@@ -49,6 +53,7 @@ public class Pdf
             var fileName = DetermineFileName(outputFile);
 
             // Save document.
+            //todo ask if I can change that as well (remove option)
             var pdfRenderer = new PdfDocumentRenderer(outputFile.Unicode)
             {
                 Document = document
@@ -59,11 +64,11 @@ public class Pdf
             pdfRenderer.PdfDocument.Save(fileName);
 
             return new Result(true, fileName);
-
         }
         catch
         {
             if (options.ThrowErrorOnFailure) throw;
+
             return new Result(false, null);
         }
     }
@@ -90,28 +95,34 @@ public class Pdf
             {
                 case ElementType.Image:
                     AddImage(section, pageElement, width);
+
                     break;
                 case ElementType.PageBreak:
                     section = document.AddSection();
                     SetupPage(section.PageSetup, width, height, documentSettings);
+
                     break;
                 case ElementType.Header:
                     SetFont(style, pageElement);
                     SetParagraphStyle(style, pageElement);
                     AddHeaderFooterContent(section, pageElement, style, true);
+
                     break;
                 case ElementType.Footer:
                     SetFont(style, pageElement);
                     SetParagraphStyle(style, pageElement);
                     AddHeaderFooterContent(section, pageElement, style, false);
+
                     break;
                 case ElementType.Table:
                     AddTable(section, pageElement, width);
+
                     break;
                 default:
                     SetFont(style, pageElement);
                     SetParagraphStyle(style, pageElement);
                     AddTextContent(section, pageElement, style);
+
                     break;
             }
 
@@ -134,11 +145,15 @@ public class Pdf
                 case FileExistsActionEnum.Error:
                     throw new Exception($"File {fileName} already exists.");
                 case FileExistsActionEnum.Rename:
-                    fileName = Path.Combine(outputFile.Directory, $"{Path.GetFileNameWithoutExtension(outputFile.FileName)}_({fileNameIndex}){Path.GetExtension(outputFile.FileName)}");
+                    fileName = Path.Combine(outputFile.Directory,
+                        $"{Path.GetFileNameWithoutExtension(outputFile.FileName)}_({fileNameIndex}){Path.GetExtension(outputFile.FileName)}");
+
                     break;
             }
+
             fileNameIndex++;
         }
+
         return fileName;
     }
 
@@ -157,7 +172,8 @@ public class Pdf
     {
         style.ParagraphFormat.LineSpacing = new Unit(pageContent.LineSpacingInPt, UnitType.Point);
         style.ParagraphFormat.LineSpacingRule = LineSpacingRule.Exactly;
-        style.ParagraphFormat.Alignment = pageContent.ParagraphAlignment.ConvertEnum<MigraDoc.DocumentObjectModel.ParagraphAlignment>();
+        style.ParagraphFormat.Alignment =
+            pageContent.ParagraphAlignment.ConvertEnum<ParagraphAlignment>();
         style.ParagraphFormat.SpaceBefore = new Unit(pageContent.SpacingBeforeInPt, UnitType.Point);
         style.ParagraphFormat.SpaceAfter = new Unit(pageContent.SpacingAfterInPt, UnitType.Point);
     }
@@ -169,21 +185,18 @@ public class Pdf
 
         Unit originalImageWidthInches;
 
-        // Workaround to get image dimensions.
-        // Namespace has to be introduced due to conflict with MigraDoc.DocumentObjectModel.Shapes.Image.
-        using (System.Drawing.Image userImage = System.Drawing.Image.FromFile(pageContent.ImagePath))
-        {
-            // Get image width in inches.
-            var imageInches = userImage.Width / userImage.VerticalResolution;
-            originalImageWidthInches = new Unit(imageInches, UnitType.Inch);
-        }
+        using var xImage = XImage.FromFile(pageContent.ImagePath);
+        originalImageWidthInches = Unit.FromPoint(xImage.PointWidth);
+
 
         // Add image.
         var image = section.AddImage(pageContent.ImagePath);
 
         // Calculate Image size.
         // If actual image size is larger than PageWidth - margins, set image width as page width - margins.
-        var actualPageContentWidth = new Unit((pageWidth.Inch - section.PageSetup.LeftMargin.Inch - section.PageSetup.RightMargin.Inch), UnitType.Inch);
+        var actualPageContentWidth =
+            new Unit((pageWidth.Inch - section.PageSetup.LeftMargin.Inch - section.PageSetup.RightMargin.Inch),
+                UnitType.Inch);
         if (originalImageWidthInches > actualPageContentWidth) image.Width = actualPageContentWidth;
         image.LockAspectRatio = true;
         image.Left = pageContent.ImageAlignment.ConvertEnum<ShapePosition>();
@@ -199,10 +212,9 @@ public class Pdf
         paragraph.Format.Font.Color = Colors.Black;
 
         // Read text line by line.
-        string line = string.Empty;
-
         using var reader = new StringReader(pageContent.Text);
-        while ((line = reader.ReadLine()) != null)
+
+        while (reader.ReadLine() is { } line)
         {
             // Read text one char at a time, so that multiple whitespaces are added correctly.
             foreach (var character in line.ToCharArray())
@@ -216,7 +228,8 @@ public class Pdf
         }
     }
 
-    private static void AddHeaderFooterContent(Section section, PageContentElement pageContent, Style style, bool isHeader)
+    private static void AddHeaderFooterContent(Section section, PageContentElement pageContent, Style style,
+        bool isHeader)
     {
         // Skip if text content is empty.
         if (string.IsNullOrWhiteSpace(pageContent.Text)) return;
@@ -239,6 +252,7 @@ public class Pdf
                 row = table.AddRow();
                 row.VerticalAlignment = VerticalAlignment.Center;
                 textField = row.Cells[0].AddParagraph();
+
                 break;
             case HeaderFooterStyleEnum.TextPagenum:
                 table.AddColumn("12cm");
@@ -248,6 +262,7 @@ public class Pdf
                 textField = row.Cells[0].AddParagraph();
                 pagenumField = row.Cells[1].AddParagraph();
                 FormatPagenumField(style, pagenumField);
+
                 break;
             case HeaderFooterStyleEnum.LogoText:
                 table.AddColumn("5cm");
@@ -256,6 +271,7 @@ public class Pdf
                 row.VerticalAlignment = VerticalAlignment.Center;
                 FormatHeaderFooterLogo(pageContent, row);
                 textField = row.Cells[1].AddParagraph();
+
                 break;
             case HeaderFooterStyleEnum.LogoTextPagenum:
                 table.AddColumn("5cm");
@@ -267,6 +283,7 @@ public class Pdf
                 textField = row.Cells[1].AddParagraph();
                 pagenumField = row.Cells[2].AddParagraph();
                 FormatPagenumField(style, pagenumField);
+
                 break;
             default:
                 throw new Exception($"Cannot insert header without proper style choice.");
@@ -276,8 +293,10 @@ public class Pdf
         textField.Format.Font.Color = Colors.Black;
         textField.AddText(pageContent.Text);
 
-        if (pageContent.BorderWidthInPt > 0 && isHeader) table.Borders.Bottom.Width = new Unit(pageContent.BorderWidthInPt, UnitType.Point);
-        else if (pageContent.BorderWidthInPt > 0 && !isHeader) table.Borders.Top.Width = new Unit(pageContent.BorderWidthInPt, UnitType.Point);
+        if (pageContent.BorderWidthInPt > 0 && isHeader)
+            table.Borders.Bottom.Width = new Unit(pageContent.BorderWidthInPt, UnitType.Point);
+        else if (pageContent.BorderWidthInPt > 0 && !isHeader)
+            table.Borders.Top.Width = new Unit(pageContent.BorderWidthInPt, UnitType.Point);
     }
 
     private static void AddTable(Section section, PageContentElement pageContent, Unit pageWidth)
@@ -289,23 +308,32 @@ public class Pdf
         {
             case TableTypeEnum.Header:
                 table = section.Headers.Primary.AddTable();
+
                 break;
             case TableTypeEnum.Footer:
                 table = section.Footers.Primary.AddTable();
+
                 break;
             default:
                 table = section.AddTable();
+
                 break;
         }
 
         var tableWidth = new Unit(0, UnitType.Centimeter);
-        var actualPageContentWidth = new Unit((pageWidth.Centimeter - section.PageSetup.LeftMargin.Centimeter - section.PageSetup.RightMargin.Centimeter), UnitType.Centimeter);
+        var actualPageContentWidth =
+            new Unit(
+                (pageWidth.Centimeter - section.PageSetup.LeftMargin.Centimeter -
+                 section.PageSetup.RightMargin.Centimeter), UnitType.Centimeter);
 
         foreach (var column in tableData.Columns)
         {
             var columnWidth = new Unit(column.WidthInCm, UnitType.Centimeter);
             tableWidth += columnWidth;
-            if (tableWidth > actualPageContentWidth) throw new Exception($"Page allows table to be {actualPageContentWidth.Centimeter} cm wide. Provided table's width is larger than that, {tableWidth.Centimeter} cm.");
+
+            if (tableWidth > actualPageContentWidth)
+                throw new Exception(
+                    $"Page allows table to be {actualPageContentWidth.Centimeter} cm wide. Provided table's width is larger than that, {tableWidth.Centimeter} cm.");
             table.AddColumn(columnWidth);
         }
 
@@ -313,7 +341,11 @@ public class Pdf
         {
             var columnHeaders = tableData.Columns.Select(column => column.Name).ToList();
             var headerColumnDefinitions = new List<TableColumnDefinition>();
-            for (int i = 0; i < columnHeaders.Count; i++) headerColumnDefinitions.Add(new TableColumnDefinition { Type = TableColumnType.Text });
+            for (int i = 0; i < columnHeaders.Count; i++)
+                headerColumnDefinitions.Add(new TableColumnDefinition
+                {
+                    Type = TableColumnType.Text
+                });
             ProcessRow(table, headerColumnDefinitions, columnHeaders, tableData.StyleSettings);
         }
 
@@ -329,12 +361,15 @@ public class Pdf
             {
                 case TableBorderStyle.Top:
                     table.Borders.Top.Width = new Unit(tableData.StyleSettings.BorderWidthInPt, UnitType.Point);
+
                     break;
                 case TableBorderStyle.Bottom:
                     table.Borders.Bottom.Width = new Unit(tableData.StyleSettings.BorderWidthInPt, UnitType.Point);
+
                     break;
                 case TableBorderStyle.All:
                     table.Borders.Width = new Unit(tableData.StyleSettings.BorderWidthInPt, UnitType.Point);
+
                     break;
                 case TableBorderStyle.None:
                     break;
@@ -342,7 +377,8 @@ public class Pdf
         }
     }
 
-    private static void ProcessRow(Table table, List<TableColumnDefinition> columns, List<string> data, TableStyle style)
+    private static void ProcessRow(Table table, List<TableColumnDefinition> columns, List<string> data,
+        TableStyle style)
     {
         var row = table.AddRow();
         row.VerticalAlignment = VerticalAlignment.Center;
@@ -355,14 +391,18 @@ public class Pdf
                     var textField = row.Cells[i].AddParagraph();
                     SetParagraphStyle(textField, style);
                     textField.AddText(data[i]);
+
                     break;
                 case TableColumnType.Image:
-                    if (string.IsNullOrWhiteSpace(data[i]) || !File.Exists(data[i])) throw new FileNotFoundException($"Path to header graphics was empty or the file does not exist.");
+                    if (string.IsNullOrWhiteSpace(data[i]) || !File.Exists(data[i]))
+                        throw new FileNotFoundException(
+                            $"Path to header graphics was empty or the file does not exist.");
                     var logo = row.Cells[i].AddImage(data[i]);
                     logo.Height = new Unit(columns[i].HeightInCm, UnitType.Centimeter);
                     logo.LockAspectRatio = true;
                     logo.Top = ShapePosition.Top;
                     logo.Left = ShapePosition.Left;
+
                     break;
                 case TableColumnType.PageNum:
                     var pagenumField = row.Cells[i].AddParagraph();
@@ -371,6 +411,7 @@ public class Pdf
                     pagenumField.AddText(" (");
                     pagenumField.AddNumPagesField();
                     pagenumField.AddText(")");
+
                     break;
             }
         }
@@ -386,16 +427,20 @@ public class Pdf
         {
             case FontStyleEnum.Bold:
                 pg.Format.Font.Bold = true;
+
                 break;
             case FontStyleEnum.Italic:
                 pg.Format.Font.Italic = true;
+
                 break;
             case FontStyleEnum.BoldItalic:
                 pg.Format.Font.Bold = true;
                 pg.Format.Font.Italic = true;
+
                 break;
             case FontStyleEnum.Underline:
                 pg.Format.Font.Underline = Underline.Single;
+
                 break;
         }
 
@@ -407,7 +452,8 @@ public class Pdf
     private static void FormatHeaderFooterLogo(PageContentElement pageContent, Row row)
     {
         if (string.IsNullOrWhiteSpace(pageContent.ImagePath) || !File.Exists(pageContent.ImagePath))
-            throw new FileNotFoundException("Path to header graphics was empty or the file does not exist: " + pageContent.ImagePath);
+            throw new FileNotFoundException("Path to header graphics was empty or the file does not exist: " +
+                                            pageContent.ImagePath);
 
         var logo = row.Cells[0].AddImage(pageContent.ImagePath);
         logo.Height = new Unit(pageContent.ImageHeightInCm, UnitType.Centimeter);
@@ -436,19 +482,24 @@ public class Pdf
         {
             case FontStyleEnum.Bold:
                 style.Font.Bold = true;
+
                 break;
             case FontStyleEnum.BoldItalic:
                 style.Font.Bold = true;
                 style.Font.Italic = true;
+
                 break;
             case FontStyleEnum.Italic:
                 style.Font.Italic = true;
+
                 break;
             case FontStyleEnum.Underline:
                 style.Font.Underline = Underline.Single;
+
                 break;
         }
     }
 
     #endregion
+
 }
