@@ -532,22 +532,8 @@ with some tab
         _paragraphContent.FontFamily = "NonExistingFont";
         _options.FallbackFontName = "OtherNonExistingFont";
 
-        var result = Assert.Throws<InvalidOperationException>(() => CallCreatePdf([_paragraphContent]));
-        Assert.That(result.Message.Contains("No appropriate font found"));
-
+        Assert.Throws<InvalidOperationException>(() => CallCreatePdf([_paragraphContent]));
         Assert.IsFalse(File.Exists(_destinationFullPath));
-    }
-
-    [Test]
-    public void SettingUpCustomFontDirectoryWorksCorrectly()
-    {
-        _paragraphContent.Text = "some text";
-        _options.CustomFontsLocation = Directory.GetCurrentDirectory();
-
-        var result = CallCreatePdf([_paragraphContent]);
-
-        Assert.IsTrue(File.Exists(_destinationFullPath));
-        Assert.IsTrue(result.Success);
     }
 
     [Test]

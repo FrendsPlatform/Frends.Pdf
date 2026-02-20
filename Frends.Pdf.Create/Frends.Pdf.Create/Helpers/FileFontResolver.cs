@@ -16,9 +16,9 @@ internal class FileFontResolver : IFontResolver
 
     public FileFontResolver(string defaultFamilyName = "Arial", string customFontsLocation = null)
     {
+        _customFontsLocation = string.IsNullOrWhiteSpace(customFontsLocation) ? null : customFontsLocation;
         _fontsLocations = GetFontsLocations();
         _defaultFamilyName = string.IsNullOrWhiteSpace(defaultFamilyName) ? "Arial" : defaultFamilyName;
-        _customFontsLocation = string.IsNullOrWhiteSpace(customFontsLocation) ? null : defaultFamilyName;
         List<string> fontsPaths = [];
         foreach (var location in _fontsLocations)
         {
