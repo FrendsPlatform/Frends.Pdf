@@ -30,11 +30,4 @@ public class FileProperties
     /// <example>Error</example>
     [DefaultValue(FileExistsActionEnum.Error)]
     public FileExistsActionEnum FileExistsAction { get; set; }
-
-    /// <summary>
-    /// Use Unicode text (true) or ANSI (false).
-    /// </summary>
-    /// <example>true</example>
-    [DefaultValue(true)]
-    public bool Unicode { get; set; }
 }

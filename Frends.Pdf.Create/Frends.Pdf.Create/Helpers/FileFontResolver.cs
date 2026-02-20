@@ -1,70 +1,105 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.CompilerServices;
-
+using System.Linq;
+using Frends.Pdf.Create.Definitions;
 using PdfSharp.Fonts;
 
 namespace Frends.Pdf.Create.Helpers;
+
 internal class FileFontResolver : IFontResolver
 {
-// Dictionary to map "familyname_bold_italic" to a physical file path
-    private static readonly Dictionary<string, string> _fontMap = new(StringComparer.OrdinalIgnoreCase);
-    private static readonly string WindowsFontsPath = Environment.GetFolderPath(Environment.SpecialFolder.Fonts);
-    //TODO check for getting linux folder
-    static FileFontResolver()
-    {
-        //todo try to get info about font by some additional package
-        // add option to specify font folder
-        // maybe add option to map font name to font file etc.
+    private readonly List<FontMetadata> _fonts = [];
+    private readonly string[] _fontsLocations;
+    private readonly string _defaultFamilyName;
+    private readonly string _customFontsLocation;
 
-        // One-time scan of the fonts folder to see what's actually installed
-        // This avoids hardcoding and is much faster than GDI+
-        foreach (var file in Directory.GetFiles(WindowsFontsPath, "*.ttf"))
+    public FileFontResolver(string defaultFamilyName = "Arial", string customFontsLocation = null)
+    {
+        _fontsLocations = GetFontsLocations();
+        _defaultFamilyName = string.IsNullOrWhiteSpace(defaultFamilyName) ? "Arial" : defaultFamilyName;
+        _customFontsLocation = string.IsNullOrWhiteSpace(customFontsLocation) ? null : defaultFamilyName;
+        List<string> fontsPaths = [];
+        foreach (var location in _fontsLocations)
+        {
+            fontsPaths.AddRange(Directory.GetFiles(location, "*.ttf", SearchOption.AllDirectories));
+        }
+
+        foreach (var file in fontsPaths)
         {
             try
             {
-                // We use the filename as the key.
-                // Note: Most Windows fonts follow standard naming (arial, arialbd, etc.)
-                _fontMap[Path.GetFileName(file)] = file;
+                _fonts.Add(new FontMetadata(file));
             }
-            catch { /* Skip corrupted files */ }
+            catch
+            {
+                /* Skip corrupted files */
+            }
         }
     }
 
     public FontResolverInfo ResolveTypeface(string familyName, bool isBold, bool isItalic)
     {
-        string name = familyName.ToLower();
-
-        // Basic mapping logic for common naming conventions
-        string suffix = "";
-        if (isBold && isItalic) suffix = "bi";
-        else if (isBold) suffix = "bd";
-        else if (isItalic) suffix = "i";
-
-        string expectedFile = $"{name}{suffix}.ttf";
-
-        // Check if the file exists in our scanned map
-        if (_fontMap.ContainsKey(expectedFile))
-        {
-            return new FontResolverInfo(expectedFile);
-        }
-
-        // Fallback to the regular version if the specific style (bold/italic) isn't found
-        if (_fontMap.ContainsKey($"{name}.ttf"))
-        {
-            return new FontResolverInfo($"{name}.ttf");
-        }
-
-        // Final safety fallback so the app never crashes
-        return new FontResolverInfo("arial.ttf");
+        var font =
+            // try to get font we are looking for
+            _fonts.FirstOrDefault(f =>
+                f.Name.Equals(familyName, StringComparison.CurrentCultureIgnoreCase)
+                && f.IsBold == isBold
+                && f.IsItalic == isItalic)
+            // try to get regular font from family
+            ?? _fonts.FirstOrDefault(f =>
+                f.Name.Equals(familyName, StringComparison.CurrentCultureIgnoreCase)
+                && !f.IsBold
+                && !f.IsItalic)
+            // try to get any font from family
+            ?? _fonts.FirstOrDefault(f => f.Name.Equals(familyName, StringComparison.CurrentCultureIgnoreCase))
+            // try to get regular fallback font
+            ?? _fonts.FirstOrDefault(f =>
+                f.Name.Equals(_defaultFamilyName, StringComparison.CurrentCultureIgnoreCase)
+                && !f.IsBold
+                && !f.IsItalic)
+            // try to get any font from fallback family
+            ?? _fonts.FirstOrDefault(f =>
+                f.Name.Equals(_defaultFamilyName, StringComparison.CurrentCultureIgnoreCase))
+            ?? throw new Exception(
+                $"Font: {familyName} {(!isBold && !isItalic ? "regular" : string.Empty)} {(isBold ? "bold" : string.Empty)} {(isItalic ? "italic" : string.Empty)}, couldn't be resolved");
+        return new FontResolverInfo(font.FileName);
     }
 
     public byte[] GetFont(string faceName)
     {
-        // faceName is the string we put in FontResolverInfo above
-        string fullPath = Path.Combine(WindowsFontsPath, faceName);
+        foreach (var location in _fontsLocations)
+        {
+            string fullPath = Path.Combine(location, faceName);
+            if (File.Exists(fullPath))
+            {
+                return File.ReadAllBytes(fullPath);
+            }
+        }
 
-        return File.Exists(fullPath) ? File.ReadAllBytes(fullPath) : null;
+        throw new Exception("Could not find font file");
+    }
+
+    private string[] GetFontsLocations()
+    {
+        List<string> result = [];
+        if (OperatingSystem.IsWindows())
+        {
+            result.Add(Environment.GetFolderPath(Environment.SpecialFolder.Fonts));
+        }
+        else if (OperatingSystem.IsLinux())
+        {
+            result.AddRange([
+                "/usr/share/fonts",
+                "/usr/local/share/fonts",
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".local/share/fonts"),
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".fonts")
+            ]);
+        }
+        else throw new Exception("Unsupported operating system");
+
+        if (_customFontsLocation != null) result.Add(_customFontsLocation);
+
+        return result.ToArray();
     }
 }

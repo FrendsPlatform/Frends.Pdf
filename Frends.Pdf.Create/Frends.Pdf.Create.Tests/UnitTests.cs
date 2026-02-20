@@ -9,7 +9,10 @@ namespace Frends.Pdf.Create.Tests;
 public class UnitTests
 {
     private static readonly string _fileName = "test_output.pdf";
-    private static readonly string _folder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"../../../TestOutput");
+
+    private static readonly string
+        _folder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"../../../TestOutput");
+
     private static readonly string _destinationFullPath = Path.Combine(_folder, _fileName);
     private FileProperties _fileProperties;
     private DocumentSettings _docSettings;
@@ -30,13 +33,70 @@ public class UnitTests
             Directory.CreateDirectory(_folder);
         }
 
-        _fileProperties = new FileProperties { Directory = _folder, FileName = _fileName, FileExistsAction = FileExistsActionEnum.Error, Unicode = true };
-        _docSettings = new DocumentSettings { MarginBottomInCm = 2, MarginLeftInCm = 2.5, MarginRightInCm = 2.5, MarginTopInCm = 5, Orientation = PageOrientationEnum.Portrait, Size = PageSizeEnum.A4 };
+        _fileProperties = new FileProperties
+        {
+            Directory = _folder, FileName = _fileName, FileExistsAction = FileExistsActionEnum.Error
+        };
+        _docSettings = new DocumentSettings
+        {
+            MarginBottomInCm = 2,
+            MarginLeftInCm = 2.5,
+            MarginRightInCm = 2.5,
+            MarginTopInCm = 5,
+            Orientation = PageOrientationEnum.Portrait,
+            Size = PageSizeEnum.A4
+        };
         var logoPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"../../../Files/logo.png");
-        _header = new PageContentElement { ContentType = ElementType.Header, FontFamily = "Times New Roman", FontSize = 8, FontStyle = FontStyleEnum.Regular, LineSpacingInPt = 11, ParagraphAlignment = ParagraphAlignmentEnum.Right, SpacingAfterInPt = 0, SpacingBeforeInPt = 8, ImagePath = logoPath, HeaderFooterStyle = HeaderFooterStyleEnum.LogoText, BorderWidthInPt = 0.5, ImageHeightInCm = 0.5 };
-        _footer = new PageContentElement { ContentType = ElementType.Footer, FontFamily = "Times New Roman", FontSize = 8, FontStyle = FontStyleEnum.Regular, LineSpacingInPt = 11, ParagraphAlignment = ParagraphAlignmentEnum.Center, SpacingAfterInPt = 0, SpacingBeforeInPt = 8, HeaderFooterStyle = HeaderFooterStyleEnum.TextPagenum, BorderWidthInPt = 0.0 };
-        _title = new PageContentElement { ContentType = ElementType.Paragraph, FontFamily = "Times New Roman", FontSize = 16, FontStyle = FontStyleEnum.Bold, LineSpacingInPt = 11, ParagraphAlignment = ParagraphAlignmentEnum.Left, SpacingAfterInPt = 0, SpacingBeforeInPt = 8 };
-        _paragraphContent = new PageContentElement { ContentType = ElementType.Paragraph, FontFamily = "Times New Roman", FontSize = 11, FontStyle = FontStyleEnum.Regular, LineSpacingInPt = 11, ParagraphAlignment = ParagraphAlignmentEnum.Left, SpacingAfterInPt = 0, SpacingBeforeInPt = 8 };
+        _header = new PageContentElement
+        {
+            ContentType = ElementType.Header,
+            FontFamily = "Times New Roman",
+            FontSize = 8,
+            FontStyle = FontStyleEnum.Regular,
+            LineSpacingInPt = 11,
+            ParagraphAlignment = ParagraphAlignmentEnum.Right,
+            SpacingAfterInPt = 0,
+            SpacingBeforeInPt = 8,
+            ImagePath = logoPath,
+            HeaderFooterStyle = HeaderFooterStyleEnum.LogoText,
+            BorderWidthInPt = 0.5,
+            ImageHeightInCm = 0.5
+        };
+        _footer = new PageContentElement
+        {
+            ContentType = ElementType.Footer,
+            FontFamily = "Times New Roman",
+            FontSize = 8,
+            FontStyle = FontStyleEnum.Regular,
+            LineSpacingInPt = 11,
+            ParagraphAlignment = ParagraphAlignmentEnum.Center,
+            SpacingAfterInPt = 0,
+            SpacingBeforeInPt = 8,
+            HeaderFooterStyle = HeaderFooterStyleEnum.TextPagenum,
+            BorderWidthInPt = 0.0
+        };
+        _title = new PageContentElement
+        {
+            ContentType = ElementType.Paragraph,
+            FontFamily = "Times New Roman",
+            FontSize = 16,
+            FontStyle = FontStyleEnum.Bold,
+            LineSpacingInPt = 11,
+            ParagraphAlignment = ParagraphAlignmentEnum.Left,
+            SpacingAfterInPt = 0,
+            SpacingBeforeInPt = 8
+        };
+        _paragraphContent = new PageContentElement
+        {
+            ContentType = ElementType.Paragraph,
+            FontFamily = "Times New Roman",
+            FontSize = 11,
+            FontStyle = FontStyleEnum.Regular,
+            LineSpacingInPt = 11,
+            ParagraphAlignment = ParagraphAlignmentEnum.Left,
+            SpacingAfterInPt = 0,
+            SpacingBeforeInPt = 8
+        };
 
         var tablePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"../../../Files/ContentDefinition.json");
         var tableDefinition = File.ReadAllText(tablePath);
@@ -68,7 +128,11 @@ with some tab
         two
             three. Then end with scandic letter ö and russian word код.";
 
-        var result = CallCreatePdf(new PageContentElement[] { _header, _footer, _title, _paragraphContent, new PageContentElement { ContentType = ElementType.PageBreak }, _tableContent });
+        var result = CallCreatePdf(new PageContentElement[]
+        {
+            _header, _footer, _title, _paragraphContent,
+            new PageContentElement { ContentType = ElementType.PageBreak }, _tableContent
+        });
 
         Assert.IsTrue(File.Exists(_destinationFullPath));
         Assert.IsTrue(result.Success);
@@ -137,7 +201,21 @@ with some tab
         _fileProperties.FileExistsAction = FileExistsActionEnum.Overwrite;
 
         var logoPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Files\no_such_logo.png");
-        var header = new PageContentElement { ContentType = ElementType.Header, FontFamily = "Times New Roman", FontSize = 8, FontStyle = FontStyleEnum.Regular, LineSpacingInPt = 11, ParagraphAlignment = ParagraphAlignmentEnum.Right, SpacingAfterInPt = 0, SpacingBeforeInPt = 8, ImagePath = logoPath, HeaderFooterStyle = HeaderFooterStyleEnum.LogoText, BorderWidthInPt = 0.5, ImageHeightInCm = 0.5 };
+        var header = new PageContentElement
+        {
+            ContentType = ElementType.Header,
+            FontFamily = "Times New Roman",
+            FontSize = 8,
+            FontStyle = FontStyleEnum.Regular,
+            LineSpacingInPt = 11,
+            ParagraphAlignment = ParagraphAlignmentEnum.Right,
+            SpacingAfterInPt = 0,
+            SpacingBeforeInPt = 8,
+            ImagePath = logoPath,
+            HeaderFooterStyle = HeaderFooterStyleEnum.LogoText,
+            BorderWidthInPt = 0.5,
+            ImageHeightInCm = 0.5
+        };
         header.Text = @"This is a header";
         var errorMessage = "Path to header graphics was empty or the file does not exist: " + logoPath;
 
@@ -149,7 +227,8 @@ with some tab
     [Test]
     public void Create_TableWidthTooLargeTest()
     {
-        var tooWideTable = @"{ ""HasHeaderRow"": true, ""TableType"": ""Table"", ""Columns"": [ { ""Name"": ""Sarake 1"", ""WidthInCm"": 21, ""HeightInCm"": 0, ""Type"": ""Text"" } ], ""RowData"": [] }";
+        var tooWideTable =
+            @"{ ""HasHeaderRow"": true, ""TableType"": ""Table"", ""Columns"": [ { ""Name"": ""Sarake 1"", ""WidthInCm"": 21, ""HeightInCm"": 0, ""Type"": ""Text"" } ], ""RowData"": [] }";
         var table1 = new PageContentElement { ContentType = ElementType.Table, Table = tooWideTable };
         var errorMessage = "Page allows table to be 16 cm wide. Provided table's width is larger than that";
         var result1 = Assert.Throws<Exception>(() => CallCreatePdf(new PageContentElement[] { table1 }));
@@ -162,14 +241,13 @@ with some tab
     [Test]
     public void Create_TableWidthTooLargeTestShouldNotThrowWhenThrowOnErrorFalse()
     {
-        var tooWideTable = @"{ ""HasHeaderRow"": true, ""TableType"": ""Table"", ""Columns"": [ { ""Name"": ""Sarake 1"", ""WidthInCm"": 21, ""HeightInCm"": 0, ""Type"": ""Text"" } ], ""RowData"": [] }";
+        var tooWideTable =
+            @"{ ""HasHeaderRow"": true, ""TableType"": ""Table"", ""Columns"": [ { ""Name"": ""Sarake 1"", ""WidthInCm"": 21, ""HeightInCm"": 0, ""Type"": ""Text"" } ], ""RowData"": [] }";
         var table1 = new PageContentElement { ContentType = ElementType.Table, Table = tooWideTable };
-        var options = new Options
-        {
-            ThrowErrorOnFailure = false
-        };
+        var options = new Options { ThrowErrorOnFailure = false };
 
-        Pdf.Create(_fileProperties, _docSettings, new DocumentContent { Contents = new PageContentElement[] { table1 } }, options);
+        Pdf.Create(_fileProperties, _docSettings,
+            new DocumentContent { Contents = new PageContentElement[] { table1 } }, options);
 
         Assert.IsFalse(File.Exists(_destinationFullPath));
     }
@@ -179,7 +257,10 @@ with some tab
     {
         _paragraphContent.Text = string.Empty;
 
-        var fileProperties = new FileProperties { Directory = _folder, FileName = _fileName, FileExistsAction = FileExistsActionEnum.Overwrite, Unicode = true };
+        var fileProperties = new FileProperties
+        {
+            Directory = _folder, FileName = _fileName, FileExistsAction = FileExistsActionEnum.Overwrite
+        };
 
         var settings = new DocumentSettings
         {
@@ -193,7 +274,8 @@ with some tab
             Size = PageSizeEnum.A4
         };
 
-        var result = Pdf.Create(fileProperties, settings, new DocumentContent { Contents = new PageContentElement[] { _paragraphContent } }, _options);
+        var result = Pdf.Create(fileProperties, settings,
+            new DocumentContent { Contents = new PageContentElement[] { _paragraphContent } }, _options);
 
         Assert.IsTrue(File.Exists(_destinationFullPath));
         Assert.IsTrue(result.Success);
@@ -201,7 +283,8 @@ with some tab
         settings.Title = "";
         settings.Author = "";
 
-        result = Pdf.Create(fileProperties, settings, new DocumentContent { Contents = new PageContentElement[] { _paragraphContent } }, _options);
+        result = Pdf.Create(fileProperties, settings,
+            new DocumentContent { Contents = new PageContentElement[] { _paragraphContent } }, _options);
 
         Assert.IsTrue(File.Exists(_destinationFullPath));
         Assert.IsTrue(result.Success);
@@ -209,7 +292,8 @@ with some tab
         settings.Title = "Title";
         settings.Author = "Tester";
 
-        result = Pdf.Create(fileProperties, settings, new DocumentContent { Contents = new PageContentElement[] { _paragraphContent } }, _options);
+        result = Pdf.Create(fileProperties, settings,
+            new DocumentContent { Contents = new PageContentElement[] { _paragraphContent } }, _options);
 
         Assert.IsTrue(File.Exists(_destinationFullPath));
         Assert.IsTrue(result.Success);
@@ -219,19 +303,60 @@ with some tab
     public void Create_TaskShouldThrowIfImageNotFound()
     {
         var imagePath = @"c:\file\that\dont\exist\logo.png";
-        _header = new PageContentElement { ContentType = ElementType.Image, FontFamily = "Times New Roman", FontSize = 8, FontStyle = FontStyleEnum.Regular, LineSpacingInPt = 11, ParagraphAlignment = ParagraphAlignmentEnum.Right, SpacingAfterInPt = 0, SpacingBeforeInPt = 8, ImagePath = imagePath, HeaderFooterStyle = HeaderFooterStyleEnum.LogoText, BorderWidthInPt = 0.5, ImageHeightInCm = 0.5 };
-        var ex = Assert.Throws<FileNotFoundException>(() => CallCreatePdf(new PageContentElement[] { _header, _footer, _title, _paragraphContent, new PageContentElement { ContentType = ElementType.PageBreak }, _tableContent }));
+        _header = new PageContentElement
+        {
+            ContentType = ElementType.Image,
+            FontFamily = "Times New Roman",
+            FontSize = 8,
+            FontStyle = FontStyleEnum.Regular,
+            LineSpacingInPt = 11,
+            ParagraphAlignment = ParagraphAlignmentEnum.Right,
+            SpacingAfterInPt = 0,
+            SpacingBeforeInPt = 8,
+            ImagePath = imagePath,
+            HeaderFooterStyle = HeaderFooterStyleEnum.LogoText,
+            BorderWidthInPt = 0.5,
+            ImageHeightInCm = 0.5
+        };
+        var ex = Assert.Throws<FileNotFoundException>(() => CallCreatePdf(new PageContentElement[]
+        {
+            _header, _footer, _title, _paragraphContent,
+            new PageContentElement { ContentType = ElementType.PageBreak }, _tableContent
+        }));
         Assert.AreEqual($"Image not found from path: {imagePath}", ex.Message);
     }
 
     [Test]
     public void Create_LargeImage()
     {
-        var fileProperties = new FileProperties { Directory = _folder, FileName = _fileName, FileExistsAction = FileExistsActionEnum.Overwrite, Unicode = true };
+        var fileProperties = new FileProperties
+        {
+            Directory = _folder, FileName = _fileName, FileExistsAction = FileExistsActionEnum.Overwrite
+        };
 
         var imagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"../../../Files/LargeImage.png");
-        _header = new PageContentElement { ContentType = ElementType.Image, FontFamily = "Times New Roman", FontSize = 8, FontStyle = FontStyleEnum.Regular, LineSpacingInPt = 11, ParagraphAlignment = ParagraphAlignmentEnum.Right, SpacingAfterInPt = 0, SpacingBeforeInPt = 8, ImagePath = imagePath, HeaderFooterStyle = HeaderFooterStyleEnum.Text, BorderWidthInPt = 0.5, ImageHeightInCm = 0.5 };
-        var result = CallCreatePdf(new PageContentElement[] { _header, _footer, _title, _paragraphContent, new PageContentElement { ContentType = ElementType.PageBreak }, _tableContent }, fileProperties);
+        _header = new PageContentElement
+        {
+            ContentType = ElementType.Image,
+            FontFamily = "Times New Roman",
+            FontSize = 8,
+            FontStyle = FontStyleEnum.Regular,
+            LineSpacingInPt = 11,
+            ParagraphAlignment = ParagraphAlignmentEnum.Right,
+            SpacingAfterInPt = 0,
+            SpacingBeforeInPt = 8,
+            ImagePath = imagePath,
+            HeaderFooterStyle = HeaderFooterStyleEnum.Text,
+            BorderWidthInPt = 0.5,
+            ImageHeightInCm = 0.5
+        };
+        var result =
+            CallCreatePdf(
+                new PageContentElement[]
+                {
+                    _header, _footer, _title, _paragraphContent,
+                    new PageContentElement { ContentType = ElementType.PageBreak }, _tableContent
+                }, fileProperties);
         Assert.IsTrue(File.Exists(_destinationFullPath));
         Assert.IsTrue(result.Success);
     }
@@ -240,30 +365,183 @@ with some tab
     public void Create_TestHeaderAddStyles()
     {
         var logoPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"../../../Files/logo.png");
-        var fileProperties = new FileProperties { Directory = _folder, FileName = _fileName, FileExistsAction = FileExistsActionEnum.Overwrite, Unicode = true };
+        var fileProperties = new FileProperties
+        {
+            Directory = _folder, FileName = _fileName, FileExistsAction = FileExistsActionEnum.Overwrite
+        };
 
-        _header = new PageContentElement { ContentType = ElementType.Header, FontFamily = "Times New Roman", FontSize = 8, FontStyle = FontStyleEnum.Regular, LineSpacingInPt = 11, ParagraphAlignment = ParagraphAlignmentEnum.Right, SpacingAfterInPt = 0, SpacingBeforeInPt = 8, ImagePath = logoPath, HeaderFooterStyle = HeaderFooterStyleEnum.Text, BorderWidthInPt = 0.5, ImageHeightInCm = 0.5 };
-        var result = CallCreatePdf(new PageContentElement[] { _header, _footer, _title, _paragraphContent, new PageContentElement { ContentType = ElementType.PageBreak }, _tableContent }, fileProperties);
+        _header = new PageContentElement
+        {
+            ContentType = ElementType.Header,
+            FontFamily = "Times New Roman",
+            FontSize = 8,
+            FontStyle = FontStyleEnum.Regular,
+            LineSpacingInPt = 11,
+            ParagraphAlignment = ParagraphAlignmentEnum.Right,
+            SpacingAfterInPt = 0,
+            SpacingBeforeInPt = 8,
+            ImagePath = logoPath,
+            HeaderFooterStyle = HeaderFooterStyleEnum.Text,
+            BorderWidthInPt = 0.5,
+            ImageHeightInCm = 0.5
+        };
+        var result =
+            CallCreatePdf(
+                new PageContentElement[]
+                {
+                    _header, _footer, _title, _paragraphContent,
+                    new PageContentElement { ContentType = ElementType.PageBreak }, _tableContent
+                }, fileProperties);
         Assert.IsTrue(File.Exists(_destinationFullPath));
         Assert.IsTrue(result.Success);
 
-        _header = new PageContentElement { ContentType = ElementType.Header, Text = "This is a test", FontFamily = "Times New Roman", FontSize = 8, FontStyle = FontStyleEnum.Regular, LineSpacingInPt = 11, ParagraphAlignment = ParagraphAlignmentEnum.Right, SpacingAfterInPt = 0, SpacingBeforeInPt = 8, ImagePath = logoPath, HeaderFooterStyle = HeaderFooterStyleEnum.Text, BorderWidthInPt = 0.5, ImageHeightInCm = 0.5 };
-        result = CallCreatePdf(new PageContentElement[] { _header, _footer, _title, _paragraphContent, new PageContentElement { ContentType = ElementType.PageBreak }, _tableContent }, fileProperties);
+        _header = new PageContentElement
+        {
+            ContentType = ElementType.Header,
+            Text = "This is a test",
+            FontFamily = "Times New Roman",
+            FontSize = 8,
+            FontStyle = FontStyleEnum.Regular,
+            LineSpacingInPt = 11,
+            ParagraphAlignment = ParagraphAlignmentEnum.Right,
+            SpacingAfterInPt = 0,
+            SpacingBeforeInPt = 8,
+            ImagePath = logoPath,
+            HeaderFooterStyle = HeaderFooterStyleEnum.Text,
+            BorderWidthInPt = 0.5,
+            ImageHeightInCm = 0.5
+        };
+        result = CallCreatePdf(
+            new PageContentElement[]
+            {
+                _header, _footer, _title, _paragraphContent,
+                new PageContentElement { ContentType = ElementType.PageBreak }, _tableContent
+            }, fileProperties);
         Assert.IsTrue(File.Exists(_destinationFullPath));
         Assert.IsTrue(result.Success);
 
-        _header = new PageContentElement { ContentType = ElementType.Header, Text = "This is a test", FontFamily = "Times New Roman", FontSize = 8, FontStyle = FontStyleEnum.Regular, LineSpacingInPt = 11, ParagraphAlignment = ParagraphAlignmentEnum.Right, SpacingAfterInPt = 0, SpacingBeforeInPt = 8, ImagePath = logoPath, HeaderFooterStyle = HeaderFooterStyleEnum.TextPagenum, BorderWidthInPt = 0.5, ImageHeightInCm = 0.5 };
-        result = CallCreatePdf(new PageContentElement[] { _header, _footer, _title, _paragraphContent, new PageContentElement { ContentType = ElementType.PageBreak }, _tableContent }, fileProperties);
+        _header = new PageContentElement
+        {
+            ContentType = ElementType.Header,
+            Text = "This is a test",
+            FontFamily = "Times New Roman",
+            FontSize = 8,
+            FontStyle = FontStyleEnum.Regular,
+            LineSpacingInPt = 11,
+            ParagraphAlignment = ParagraphAlignmentEnum.Right,
+            SpacingAfterInPt = 0,
+            SpacingBeforeInPt = 8,
+            ImagePath = logoPath,
+            HeaderFooterStyle = HeaderFooterStyleEnum.TextPagenum,
+            BorderWidthInPt = 0.5,
+            ImageHeightInCm = 0.5
+        };
+        result = CallCreatePdf(
+            new PageContentElement[]
+            {
+                _header, _footer, _title, _paragraphContent,
+                new PageContentElement { ContentType = ElementType.PageBreak }, _tableContent
+            }, fileProperties);
         Assert.IsTrue(File.Exists(_destinationFullPath));
         Assert.IsTrue(result.Success);
 
-        _header = new PageContentElement { ContentType = ElementType.Header, Text = "This is a test", FontFamily = "Times New Roman", FontSize = 8, FontStyle = FontStyleEnum.Regular, LineSpacingInPt = 11, ParagraphAlignment = ParagraphAlignmentEnum.Right, SpacingAfterInPt = 0, SpacingBeforeInPt = 8, ImagePath = logoPath, HeaderFooterStyle = HeaderFooterStyleEnum.LogoText, BorderWidthInPt = 0.5, ImageHeightInCm = 0.5 };
-        result = CallCreatePdf(new PageContentElement[] { _header, _footer, _title, _paragraphContent, new PageContentElement { ContentType = ElementType.PageBreak }, _tableContent }, fileProperties);
+        _header = new PageContentElement
+        {
+            ContentType = ElementType.Header,
+            Text = "This is a test",
+            FontFamily = "Times New Roman",
+            FontSize = 8,
+            FontStyle = FontStyleEnum.Regular,
+            LineSpacingInPt = 11,
+            ParagraphAlignment = ParagraphAlignmentEnum.Right,
+            SpacingAfterInPt = 0,
+            SpacingBeforeInPt = 8,
+            ImagePath = logoPath,
+            HeaderFooterStyle = HeaderFooterStyleEnum.LogoText,
+            BorderWidthInPt = 0.5,
+            ImageHeightInCm = 0.5
+        };
+        result = CallCreatePdf(
+            new PageContentElement[]
+            {
+                _header, _footer, _title, _paragraphContent,
+                new PageContentElement { ContentType = ElementType.PageBreak }, _tableContent
+            }, fileProperties);
         Assert.IsTrue(File.Exists(_destinationFullPath));
         Assert.IsTrue(result.Success);
 
-        _header = new PageContentElement { ContentType = ElementType.Header, Text = "This is a test", FontFamily = "Times New Roman", FontSize = 8, FontStyle = FontStyleEnum.Regular, LineSpacingInPt = 11, ParagraphAlignment = ParagraphAlignmentEnum.Right, SpacingAfterInPt = 0, SpacingBeforeInPt = 8, ImagePath = logoPath, HeaderFooterStyle = HeaderFooterStyleEnum.LogoTextPagenum, BorderWidthInPt = 0.5, ImageHeightInCm = 0.5 };
-        result = CallCreatePdf(new PageContentElement[] { _header, _footer, _title, _paragraphContent, new PageContentElement { ContentType = ElementType.PageBreak }, _tableContent }, fileProperties);
+        _header = new PageContentElement
+        {
+            ContentType = ElementType.Header,
+            Text = "This is a test",
+            FontFamily = "Times New Roman",
+            FontSize = 8,
+            FontStyle = FontStyleEnum.Regular,
+            LineSpacingInPt = 11,
+            ParagraphAlignment = ParagraphAlignmentEnum.Right,
+            SpacingAfterInPt = 0,
+            SpacingBeforeInPt = 8,
+            ImagePath = logoPath,
+            HeaderFooterStyle = HeaderFooterStyleEnum.LogoTextPagenum,
+            BorderWidthInPt = 0.5,
+            ImageHeightInCm = 0.5
+        };
+        result = CallCreatePdf(
+            new PageContentElement[]
+            {
+                _header, _footer, _title, _paragraphContent,
+                new PageContentElement { ContentType = ElementType.PageBreak }, _tableContent
+            }, fileProperties);
+        Assert.IsTrue(File.Exists(_destinationFullPath));
+        Assert.IsTrue(result.Success);
+    }
+
+    [Test]
+    public void UsingDefaultFontWithoutFailures()
+    {
+        _paragraphContent.Text = "some text";
+        _paragraphContent.FontFamily = "NonExistingFont";
+
+        var result = CallCreatePdf([_header]);
+
+        Assert.IsTrue(File.Exists(_destinationFullPath));
+        Assert.IsTrue(result.Success);
+    }
+
+    [Test]
+    public void SettingUpDefaultFontWithoutFailures()
+    {
+        _paragraphContent.Text = "some text";
+        _paragraphContent.FontFamily = "NonExistingFont";
+        _options.FallbackFontName = "Times New Roman";
+
+        var result = CallCreatePdf([_header]);
+
+        Assert.IsTrue(File.Exists(_destinationFullPath));
+        Assert.IsTrue(result.Success);
+    }
+
+    [Test]
+    public void SettingUpNonExistingDefaultFontFails()
+    {
+        _paragraphContent.Text = "some text";
+        _paragraphContent.FontFamily = "NonExistingFont";
+        _options.FallbackFontName = "OtherNonExistingFont";
+
+        var result = Assert.Throws<InvalidOperationException>(() => CallCreatePdf([_paragraphContent]));
+        Assert.That(result.Message.Contains("No appropriate font found"));
+
+        Assert.IsFalse(File.Exists(_destinationFullPath));
+    }
+
+    [Test]
+    public void SettingUpCustomFontDirectoryWorksCorrectly()
+    {
+        _paragraphContent.Text = "some text";
+        _options.CustomFontsLocation = Directory.GetCurrentDirectory();
+
+        var result = CallCreatePdf([_paragraphContent]);
+
         Assert.IsTrue(File.Exists(_destinationFullPath));
         Assert.IsTrue(result.Success);
     }

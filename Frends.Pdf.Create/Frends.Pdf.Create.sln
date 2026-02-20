@@ -10,6 +10,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		CHANGELOG.md = CHANGELOG.md
 		README.md = README.md
+		..\.github\workflows\Create_build_and_test_on_main.yml = ..\.github\workflows\Create_build_and_test_on_main.yml
+		..\.github\workflows\Create_build_and_test_on_push.yml = ..\.github\workflows\Create_build_and_test_on_push.yml
+		..\.github\workflows\Create_release.yml = ..\.github\workflows\Create_release.yml
 	EndProjectSection
 EndProject
 Global

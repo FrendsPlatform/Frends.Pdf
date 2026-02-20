@@ -19,7 +19,7 @@ namespace Frends.Pdf.Create;
 /// <summary>
 /// Task class.
 /// </summary>
-public class Pdf
+public static class Pdf
 {
     /// <summary>
     /// Create PDF document from given content.
@@ -43,7 +43,7 @@ public class Pdf
     {
         try
         {
-            GlobalFontSettings.FontResolver = new FileFontResolver();
+            GlobalFontSettings.FontResolver = new FileFontResolver(options.FallbackFontName, options.CustomFontsLocation);
             var document = new Document();
             if (!string.IsNullOrWhiteSpace(documentSettings.Title)) document.Info.Title = documentSettings.Title;
             if (!string.IsNullOrWhiteSpace(documentSettings.Author)) document.Info.Author = documentSettings.Author;
@@ -53,8 +53,7 @@ public class Pdf
             var fileName = DetermineFileName(outputFile);
 
             // Save document.
-            //todo ask if I can change that as well (remove option)
-            var pdfRenderer = new PdfDocumentRenderer(outputFile.Unicode)
+            var pdfRenderer = new PdfDocumentRenderer
             {
                 Document = document
             };
@@ -183,10 +182,8 @@ public class Pdf
         if (!File.Exists(pageContent.ImagePath))
             throw new FileNotFoundException("Image not found from path: " + pageContent.ImagePath);
 
-        Unit originalImageWidthInches;
-
         using var xImage = XImage.FromFile(pageContent.ImagePath);
-        originalImageWidthInches = Unit.FromPoint(xImage.PointWidth);
+        var originalImageWidthInches = Unit.FromPoint(xImage.PointWidth);
 
 
         // Add image.
