@@ -102,7 +102,11 @@ public class UnitTests
         var tableDefinition = File.ReadAllText(tablePath);
         _tableContent = new PageContentElement { ContentType = ElementType.Table, Table = tableDefinition };
 
-        _options = new Options { ThrowErrorOnFailure = true };
+        _options = new Options
+        {
+            ThrowErrorOnFailure = true,
+            CustomFontsLocation = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../Files")
+        };
     }
 
     [TearDown]
