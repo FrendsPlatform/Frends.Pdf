@@ -18,7 +18,7 @@ public class Options
     /// <summary>
     /// Path to directory with fonts to use.
     /// If empty, task will use default system locations
-    /// Otherwise, CustomFontsLocation will be used as well as default system locations.
+    /// Otherwise, CustomFontsLocation will be used as well as default system locations, unless it does not exist.
     /// </summary>
     /// <example>C:\MyDir\fonts</example>
     [DefaultValue("")]

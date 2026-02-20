@@ -545,4 +545,16 @@ with some tab
         Assert.IsTrue(File.Exists(_destinationFullPath));
         Assert.IsTrue(result.Success);
     }
+
+    [Test]
+    public void NonExistingCustomFontDirectoryIsSkipped()
+    {
+        _paragraphContent.Text = "some text";
+        _options.CustomFontsLocation = "InvalidPath";
+
+        var result = CallCreatePdf([_paragraphContent]);
+
+        Assert.IsTrue(File.Exists(_destinationFullPath));
+        Assert.IsTrue(result.Success);
+    }
 }

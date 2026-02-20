@@ -62,7 +62,7 @@ internal class FileFontResolver : IFontResolver
             ?? _fonts.FirstOrDefault(f =>
                 f.Name.Equals(_defaultFamilyName, StringComparison.CurrentCultureIgnoreCase))
             ?? throw new Exception(
-                $"Font: {familyName} {(!isBold && !isItalic ? "regular" : string.Empty)} {(isBold ? "bold" : string.Empty)} {(isItalic ? "italic" : string.Empty)}, couldn't be resolved");
+                $"Font: {familyName} {(!isBold && !isItalic ? "regular," : string.Empty)}{(isBold ? "bold," : string.Empty)}{(isItalic ? "italic," : string.Empty)} couldn't be resolved");
         return new FontResolverInfo(font.FileName);
     }
 
@@ -83,13 +83,18 @@ internal class FileFontResolver : IFontResolver
     private string[] GetFontsLocations()
     {
         List<string> result = [];
+        List<string> potentialPaths = [_customFontsLocation];
         if (OperatingSystem.IsWindows())
         {
-            result.Add(Environment.GetFolderPath(Environment.SpecialFolder.Fonts));
+            potentialPaths.AddRange([
+                Environment.GetFolderPath(Environment.SpecialFolder.Fonts),
+                @"C:\Windows\fonts"
+            ]);
         }
         else if (OperatingSystem.IsLinux())
         {
-            result.AddRange([
+            potentialPaths.AddRange(
+            [
                 "/usr/share/fonts",
                 "/usr/local/share/fonts",
                 Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".local/share/fonts"),
@@ -98,7 +103,9 @@ internal class FileFontResolver : IFontResolver
         }
         else throw new Exception("Unsupported operating system");
 
-        if (_customFontsLocation != null) result.Add(_customFontsLocation);
+        foreach (var potentialPath in potentialPaths.Where(potentialPath =>
+                     Directory.Exists(potentialPath) && !result.Contains(potentialPath)))
+            result.Add(potentialPath);
 
         return result.ToArray();
     }
