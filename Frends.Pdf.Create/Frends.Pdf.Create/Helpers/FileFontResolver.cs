@@ -10,20 +10,18 @@ namespace Frends.Pdf.Create.Helpers;
 
 internal class FileFontResolver : IFontResolver
 {
-    private static AsyncLocal<List<FontMetadata>> _fonts;
-    private static AsyncLocal<string> _defaultFamilyName;
+    private static readonly AsyncLocal<List<FontMetadata>> Fonts = new();
+    private static readonly AsyncLocal<string> DefaultFamilyName = new();
 
     public FileFontResolver()
     {
-        _fonts = new AsyncLocal<List<FontMetadata>>();
-        _defaultFamilyName = new AsyncLocal<string>();
-        _fonts.Value = [];
+        Fonts.Value = [];
     }
 
-    public static void Setup(string defaultFamilyName = "Arial", string customFontsLocation = null)
+    public static void Setup(string defaultName = "Arial", string customFontsLocation = null)
     {
         var fontsLocations = GetFontsLocations(customFontsLocation);
-        _defaultFamilyName.Value = string.IsNullOrWhiteSpace(defaultFamilyName) ? "Arial" : defaultFamilyName;
+        DefaultFamilyName.Value = string.IsNullOrWhiteSpace(defaultName) ? "Arial" : defaultName;
         List<string> fontsPaths = [];
 
         foreach (var location in fontsLocations)
@@ -36,10 +34,10 @@ internal class FileFontResolver : IFontResolver
             try
             {
                 var newFont = new FontMetadata(file);
-                var alreadyExists = _fonts.Value.Any(f =>
+                var alreadyExists = Fonts.Value.Any(f =>
                     f.Name.Equals(newFont.Name, StringComparison.CurrentCultureIgnoreCase) &&
                     f.IsBold == newFont.IsBold && f.IsItalic == newFont.IsItalic);
-                if (!alreadyExists) _fonts.Value.Add(newFont);
+                if (!alreadyExists) Fonts.Value.Add(newFont);
             }
             catch
             {
@@ -52,25 +50,25 @@ internal class FileFontResolver : IFontResolver
     {
         var font =
             // try to get the font we are looking for
-            _fonts.Value.FirstOrDefault(f =>
+            Fonts.Value.FirstOrDefault(f =>
                 f.Name.Equals(familyName, StringComparison.CurrentCultureIgnoreCase)
                 && f.IsBold == isBold
                 && f.IsItalic == isItalic)
             // try to get a regular font from family
-            ?? _fonts.Value.FirstOrDefault(f =>
+            ?? Fonts.Value.FirstOrDefault(f =>
                 f.Name.Equals(familyName, StringComparison.CurrentCultureIgnoreCase)
                 && !f.IsBold
                 && !f.IsItalic)
-            // try to get any font from family
-            ?? _fonts.Value.FirstOrDefault(f => f.Name.Equals(familyName, StringComparison.CurrentCultureIgnoreCase))
+            // try to get any font from the family
+            ?? Fonts.Value.FirstOrDefault(f => f.Name.Equals(familyName, StringComparison.CurrentCultureIgnoreCase))
             // try to get a regular fallback font
-            ?? _fonts.Value.FirstOrDefault(f =>
-                f.Name.Equals(_defaultFamilyName.Value, StringComparison.CurrentCultureIgnoreCase)
+            ?? Fonts.Value.FirstOrDefault(f =>
+                f.Name.Equals(DefaultFamilyName.Value, StringComparison.CurrentCultureIgnoreCase)
                 && !f.IsBold
                 && !f.IsItalic)
             // try to get any font from the fallback family
-            ?? _fonts.Value.FirstOrDefault(f =>
-                f.Name.Equals(_defaultFamilyName.Value, StringComparison.CurrentCultureIgnoreCase))
+            ?? Fonts.Value.FirstOrDefault(f =>
+                f.Name.Equals(DefaultFamilyName.Value, StringComparison.CurrentCultureIgnoreCase))
             ?? throw new Exception(
                 $"Font: {familyName} {(!isBold && !isItalic ? "regular," : string.Empty)}{(isBold ? "bold," : string.Empty)}{(isItalic ? "italic," : string.Empty)} couldn't be resolved");
 
