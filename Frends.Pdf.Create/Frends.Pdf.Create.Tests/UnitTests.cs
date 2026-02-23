@@ -35,7 +35,9 @@ public class UnitTests
 
         _fileProperties = new FileProperties
         {
-            Directory = _folder, FileName = _fileName, FileExistsAction = FileExistsActionEnum.Error
+            Directory = _folder,
+            FileName = _fileName,
+            FileExistsAction = FileExistsActionEnum.Error
         };
         _docSettings = new DocumentSettings
         {
@@ -100,7 +102,11 @@ public class UnitTests
 
         var tablePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"../../../Files/ContentDefinition.json");
         var tableDefinition = File.ReadAllText(tablePath);
-        _tableContent = new PageContentElement { ContentType = ElementType.Table, Table = tableDefinition };
+        _tableContent = new PageContentElement
+        {
+            ContentType = ElementType.Table,
+            Table = tableDefinition
+        };
 
         _options = new Options
         {
@@ -119,7 +125,11 @@ public class UnitTests
     private Result CallCreatePdf(PageContentElement[] contents, FileProperties properties = null)
     {
         var fileProperties = properties == null ? _fileProperties : properties;
-        return Pdf.Create(fileProperties, _docSettings, new DocumentContent { Contents = contents }, _options);
+
+        return Pdf.Create(fileProperties, _docSettings, new DocumentContent
+        {
+            Contents = contents
+        }, _options);
     }
 
     [Test]
@@ -134,8 +144,11 @@ with some tab
 
         var result = CallCreatePdf(new PageContentElement[]
         {
-            _header, _footer, _title, _paragraphContent,
-            new PageContentElement { ContentType = ElementType.PageBreak }, _tableContent
+            _header, _footer, _title, _paragraphContent, new PageContentElement
+            {
+                ContentType = ElementType.PageBreak
+            },
+            _tableContent
         });
 
         Assert.IsTrue(File.Exists(_destinationFullPath));
@@ -146,7 +159,10 @@ with some tab
     public void Create_DoesNotFailIfContentIsEmptyTest()
     {
         _paragraphContent.Text = string.Empty;
-        var result = CallCreatePdf(new PageContentElement[] { _paragraphContent });
+        var result = CallCreatePdf(new PageContentElement[]
+        {
+            _paragraphContent
+        });
 
         Assert.IsTrue(File.Exists(_destinationFullPath));
         Assert.IsTrue(result.Success);
@@ -160,9 +176,15 @@ with some tab
         var errorMessage = "Output file already exists: " + _destinationFullPath;
 
         // Run once so file exists.
-        CallCreatePdf(new PageContentElement[] { _paragraphContent });
+        CallCreatePdf(new PageContentElement[]
+        {
+            _paragraphContent
+        });
 
-        var result = Assert.Throws<Exception>(() => CallCreatePdf(new PageContentElement[] { _paragraphContent }));
+        var result = Assert.Throws<Exception>(() => CallCreatePdf(new PageContentElement[]
+        {
+            _paragraphContent
+        }));
         Assert.AreEqual(errorMessage, result.Message);
     }
 
@@ -173,11 +195,17 @@ with some tab
         _fileProperties.FileExistsAction = FileExistsActionEnum.Overwrite;
 
         // Run once so file exists.
-        CallCreatePdf(new PageContentElement[] { _paragraphContent });
+        CallCreatePdf(new PageContentElement[]
+        {
+            _paragraphContent
+        });
         Assert.IsTrue(File.Exists(_destinationFullPath));
 
         // Run second time to overwrite the previous file.
-        CallCreatePdf(new PageContentElement[] { _paragraphContent });
+        CallCreatePdf(new PageContentElement[]
+        {
+            _paragraphContent
+        });
         Assert.IsTrue(File.Exists(_destinationFullPath));
     }
 
@@ -187,9 +215,18 @@ with some tab
         _fileProperties.FileExistsAction = FileExistsActionEnum.Rename;
 
         // Create 3 files.
-        var result1 = CallCreatePdf(new PageContentElement[] { _paragraphContent });
-        var result2 = CallCreatePdf(new PageContentElement[] { _paragraphContent });
-        var result3 = CallCreatePdf(new PageContentElement[] { _paragraphContent });
+        var result1 = CallCreatePdf(new PageContentElement[]
+        {
+            _paragraphContent
+        });
+        var result2 = CallCreatePdf(new PageContentElement[]
+        {
+            _paragraphContent
+        });
+        var result3 = CallCreatePdf(new PageContentElement[]
+        {
+            _paragraphContent
+        });
 
         Assert.IsTrue(File.Exists(result1.FileName));
         Assert.AreEqual(_destinationFullPath, result1.FileName);
@@ -223,7 +260,10 @@ with some tab
         header.Text = @"This is a header";
         var errorMessage = "Path to header graphics was empty or the file does not exist: " + logoPath;
 
-        var result = Assert.Throws<FileNotFoundException>(() => CallCreatePdf(new PageContentElement[] { header }));
+        var result = Assert.Throws<FileNotFoundException>(() => CallCreatePdf(new PageContentElement[]
+        {
+            header
+        }));
         Assert.AreEqual(errorMessage, result.Message);
         Assert.IsFalse(File.Exists(_destinationFullPath));
     }
@@ -233,9 +273,16 @@ with some tab
     {
         var tooWideTable =
             @"{ ""HasHeaderRow"": true, ""TableType"": ""Table"", ""Columns"": [ { ""Name"": ""Sarake 1"", ""WidthInCm"": 21, ""HeightInCm"": 0, ""Type"": ""Text"" } ], ""RowData"": [] }";
-        var table1 = new PageContentElement { ContentType = ElementType.Table, Table = tooWideTable };
+        var table1 = new PageContentElement
+        {
+            ContentType = ElementType.Table,
+            Table = tooWideTable
+        };
         var errorMessage = "Page allows table to be 16 cm wide. Provided table's width is larger than that";
-        var result1 = Assert.Throws<Exception>(() => CallCreatePdf(new PageContentElement[] { table1 }));
+        var result1 = Assert.Throws<Exception>(() => CallCreatePdf(new PageContentElement[]
+        {
+            table1
+        }));
 
         // Tables width is calculated during runtime, so exact check of the error message is not possible.
         Assert.IsTrue(result1.Message.Contains(errorMessage));
@@ -247,11 +294,24 @@ with some tab
     {
         var tooWideTable =
             @"{ ""HasHeaderRow"": true, ""TableType"": ""Table"", ""Columns"": [ { ""Name"": ""Sarake 1"", ""WidthInCm"": 21, ""HeightInCm"": 0, ""Type"": ""Text"" } ], ""RowData"": [] }";
-        var table1 = new PageContentElement { ContentType = ElementType.Table, Table = tooWideTable };
-        var options = new Options { ThrowErrorOnFailure = false };
+        var table1 = new PageContentElement
+        {
+            ContentType = ElementType.Table,
+            Table = tooWideTable
+        };
+        var options = new Options
+        {
+            ThrowErrorOnFailure = false
+        };
 
         Pdf.Create(_fileProperties, _docSettings,
-            new DocumentContent { Contents = new PageContentElement[] { table1 } }, options);
+            new DocumentContent
+            {
+                Contents = new PageContentElement[]
+                {
+                    table1
+                }
+            }, options);
 
         Assert.IsFalse(File.Exists(_destinationFullPath));
     }
@@ -263,7 +323,9 @@ with some tab
 
         var fileProperties = new FileProperties
         {
-            Directory = _folder, FileName = _fileName, FileExistsAction = FileExistsActionEnum.Overwrite
+            Directory = _folder,
+            FileName = _fileName,
+            FileExistsAction = FileExistsActionEnum.Overwrite
         };
 
         var settings = new DocumentSettings
@@ -279,7 +341,13 @@ with some tab
         };
 
         var result = Pdf.Create(fileProperties, settings,
-            new DocumentContent { Contents = new PageContentElement[] { _paragraphContent } }, _options);
+            new DocumentContent
+            {
+                Contents = new PageContentElement[]
+                {
+                    _paragraphContent
+                }
+            }, _options);
 
         Assert.IsTrue(File.Exists(_destinationFullPath));
         Assert.IsTrue(result.Success);
@@ -288,7 +356,13 @@ with some tab
         settings.Author = "";
 
         result = Pdf.Create(fileProperties, settings,
-            new DocumentContent { Contents = new PageContentElement[] { _paragraphContent } }, _options);
+            new DocumentContent
+            {
+                Contents = new PageContentElement[]
+                {
+                    _paragraphContent
+                }
+            }, _options);
 
         Assert.IsTrue(File.Exists(_destinationFullPath));
         Assert.IsTrue(result.Success);
@@ -297,7 +371,13 @@ with some tab
         settings.Author = "Tester";
 
         result = Pdf.Create(fileProperties, settings,
-            new DocumentContent { Contents = new PageContentElement[] { _paragraphContent } }, _options);
+            new DocumentContent
+            {
+                Contents = new PageContentElement[]
+                {
+                    _paragraphContent
+                }
+            }, _options);
 
         Assert.IsTrue(File.Exists(_destinationFullPath));
         Assert.IsTrue(result.Success);
@@ -324,8 +404,11 @@ with some tab
         };
         var ex = Assert.Throws<FileNotFoundException>(() => CallCreatePdf(new PageContentElement[]
         {
-            _header, _footer, _title, _paragraphContent,
-            new PageContentElement { ContentType = ElementType.PageBreak }, _tableContent
+            _header, _footer, _title, _paragraphContent, new PageContentElement
+            {
+                ContentType = ElementType.PageBreak
+            },
+            _tableContent
         }));
         Assert.AreEqual($"Image not found from path: {imagePath}", ex.Message);
     }
@@ -335,7 +418,9 @@ with some tab
     {
         var fileProperties = new FileProperties
         {
-            Directory = _folder, FileName = _fileName, FileExistsAction = FileExistsActionEnum.Overwrite
+            Directory = _folder,
+            FileName = _fileName,
+            FileExistsAction = FileExistsActionEnum.Overwrite
         };
 
         var imagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"../../../Files/LargeImage.png");
@@ -358,8 +443,11 @@ with some tab
             CallCreatePdf(
                 new PageContentElement[]
                 {
-                    _header, _footer, _title, _paragraphContent,
-                    new PageContentElement { ContentType = ElementType.PageBreak }, _tableContent
+                    _header, _footer, _title, _paragraphContent, new PageContentElement
+                    {
+                        ContentType = ElementType.PageBreak
+                    },
+                    _tableContent
                 }, fileProperties);
         Assert.IsTrue(File.Exists(_destinationFullPath));
         Assert.IsTrue(result.Success);
@@ -371,7 +459,9 @@ with some tab
         var logoPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"../../../Files/logo.png");
         var fileProperties = new FileProperties
         {
-            Directory = _folder, FileName = _fileName, FileExistsAction = FileExistsActionEnum.Overwrite
+            Directory = _folder,
+            FileName = _fileName,
+            FileExistsAction = FileExistsActionEnum.Overwrite
         };
 
         _header = new PageContentElement
@@ -393,8 +483,11 @@ with some tab
             CallCreatePdf(
                 new PageContentElement[]
                 {
-                    _header, _footer, _title, _paragraphContent,
-                    new PageContentElement { ContentType = ElementType.PageBreak }, _tableContent
+                    _header, _footer, _title, _paragraphContent, new PageContentElement
+                    {
+                        ContentType = ElementType.PageBreak
+                    },
+                    _tableContent
                 }, fileProperties);
         Assert.IsTrue(File.Exists(_destinationFullPath));
         Assert.IsTrue(result.Success);
@@ -418,8 +511,11 @@ with some tab
         result = CallCreatePdf(
             new PageContentElement[]
             {
-                _header, _footer, _title, _paragraphContent,
-                new PageContentElement { ContentType = ElementType.PageBreak }, _tableContent
+                _header, _footer, _title, _paragraphContent, new PageContentElement
+                {
+                    ContentType = ElementType.PageBreak
+                },
+                _tableContent
             }, fileProperties);
         Assert.IsTrue(File.Exists(_destinationFullPath));
         Assert.IsTrue(result.Success);
@@ -443,8 +539,11 @@ with some tab
         result = CallCreatePdf(
             new PageContentElement[]
             {
-                _header, _footer, _title, _paragraphContent,
-                new PageContentElement { ContentType = ElementType.PageBreak }, _tableContent
+                _header, _footer, _title, _paragraphContent, new PageContentElement
+                {
+                    ContentType = ElementType.PageBreak
+                },
+                _tableContent
             }, fileProperties);
         Assert.IsTrue(File.Exists(_destinationFullPath));
         Assert.IsTrue(result.Success);
@@ -468,8 +567,11 @@ with some tab
         result = CallCreatePdf(
             new PageContentElement[]
             {
-                _header, _footer, _title, _paragraphContent,
-                new PageContentElement { ContentType = ElementType.PageBreak }, _tableContent
+                _header, _footer, _title, _paragraphContent, new PageContentElement
+                {
+                    ContentType = ElementType.PageBreak
+                },
+                _tableContent
             }, fileProperties);
         Assert.IsTrue(File.Exists(_destinationFullPath));
         Assert.IsTrue(result.Success);
@@ -493,8 +595,11 @@ with some tab
         result = CallCreatePdf(
             new PageContentElement[]
             {
-                _header, _footer, _title, _paragraphContent,
-                new PageContentElement { ContentType = ElementType.PageBreak }, _tableContent
+                _header, _footer, _title, _paragraphContent, new PageContentElement
+                {
+                    ContentType = ElementType.PageBreak
+                },
+                _tableContent
             }, fileProperties);
         Assert.IsTrue(File.Exists(_destinationFullPath));
         Assert.IsTrue(result.Success);
@@ -506,7 +611,7 @@ with some tab
         _paragraphContent.Text = "some text";
         _paragraphContent.FontFamily = "NonExistingFont";
 
-        var result = CallCreatePdf([_header]);
+        var result = CallCreatePdf([_paragraphContent]);
 
         Assert.IsTrue(File.Exists(_destinationFullPath));
         Assert.IsTrue(result.Success);
@@ -517,9 +622,9 @@ with some tab
     {
         _paragraphContent.Text = "some text";
         _paragraphContent.FontFamily = "NonExistingFont";
-        _options.FallbackFontName = "Times New Roman";
+        _options.FallbackFontName = "Arial";
 
-        var result = CallCreatePdf([_header]);
+        var result = CallCreatePdf([_paragraphContent]);
 
         Assert.IsTrue(File.Exists(_destinationFullPath));
         Assert.IsTrue(result.Success);
@@ -529,8 +634,8 @@ with some tab
     public void SettingUpNonExistingDefaultFontFails()
     {
         _paragraphContent.Text = "some text";
-        _paragraphContent.FontFamily = "NonExistingFont";
-        _options.FallbackFontName = "OtherNonExistingFont";
+        _paragraphContent.FontFamily = "NonExisting";
+        _options.FallbackFontName = "OtherNonExisting";
 
         Assert.Throws<InvalidOperationException>(() => CallCreatePdf([_paragraphContent]));
         Assert.IsFalse(File.Exists(_destinationFullPath));

@@ -43,7 +43,8 @@ public static class Pdf
     {
         try
         {
-            GlobalFontSettings.FontResolver = new FileFontResolver(options.FallbackFontName, options.CustomFontsLocation);
+            GlobalFontSettings.FontResolver = new FileFontResolver();
+            FileFontResolver.Setup(options.FallbackFontName, options.CustomFontsLocation);
             var document = new Document();
             if (!string.IsNullOrWhiteSpace(documentSettings.Title)) document.Info.Title = documentSettings.Title;
             if (!string.IsNullOrWhiteSpace(documentSettings.Author)) document.Info.Author = documentSettings.Author;
@@ -55,7 +56,7 @@ public static class Pdf
             // Save document.
             var pdfRenderer = new PdfDocumentRenderer
             {
-                Document = document
+                Document = document,
             };
 
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);

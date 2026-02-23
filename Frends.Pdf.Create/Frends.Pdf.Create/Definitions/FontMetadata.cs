@@ -6,7 +6,7 @@ namespace Frends.Pdf.Create.Definitions;
 internal class FontMetadata
 {
     public string Name { get; }
-    public string FileName { get; }
+    public string FullPath { get; }
     public bool IsBold { get; }
     public bool IsItalic { get; }
 
@@ -19,7 +19,7 @@ internal class FontMetadata
         var (bold, italic) = GetStyleFromFlags(typeface);
 
         Name = typeface.Name;
-        FileName = Path.GetFileName(fontFilePath);
+        FullPath = fontFilePath;
         IsBold = bold;
         IsItalic = italic;
     }

@@ -5,12 +5,12 @@
 ### Changed
 
 - [Breaking Change] Upgrade to .net8.0
-- [Breaking Change] Remove deprecated option to choose Unicode vs ANSII text (Code is always Unicode now)
+- [Breaking Change] Remove the deprecated option to choose Unicode vs. ANSI text (Code is always Unicode now)
 
 ### Added
 
-- Add option to set up custom fonts directory
-- Add option to set up default font
+- Add an option to set up custom fonts directory
+- Add an option to set up default font
 - Add support for Linux systems
 
 ### Fixed
