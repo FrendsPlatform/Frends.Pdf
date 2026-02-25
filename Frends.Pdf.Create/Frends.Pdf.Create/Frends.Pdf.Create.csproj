@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <Version>1.2.0</Version>
+    <TargetFramework>net8.0</TargetFramework>
+    <Version>2.0.0</Version>
     <Authors>Frends</Authors>
 	<Copyright>Frends</Copyright>
 	<Company>Frends</Company>
@@ -23,8 +23,9 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="OpenFontSharp" Version="1.0.0" />
+    <PackageReference Include="PDFsharp-MigraDoc" Version="6.2.4" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
-	<PackageReference Include="PdfSharp.MigraDoc.Standard" Version="1.51.15" />
 	<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
