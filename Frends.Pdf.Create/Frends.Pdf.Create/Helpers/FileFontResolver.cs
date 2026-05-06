@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Frends.Pdf.Create.Definitions;
+using MigraDoc;
 using PdfSharp.Fonts;
 
 namespace Frends.Pdf.Create.Helpers;
@@ -19,6 +20,7 @@ internal class FileFontResolver : IFontResolver
 
     public static void Setup(string defaultName = "Arial", string customFontsLocation = null)
     {
+        PredefinedFontsAndChars.ErrorFontName = string.IsNullOrWhiteSpace(defaultName) ? "Arial" : defaultName;
         var fontsLocations = GetFontsLocations(customFontsLocation);
         defaultFamilyName = string.IsNullOrWhiteSpace(defaultName) ? "Arial" : defaultName;
         List<string> fontsPaths = [];
