@@ -5,6 +5,7 @@
 ### Fixed
 
 - Fallback font is now used as an error font as well.
+- Add bundled font to use in case any other font can't be resolved.
 
 ## [2.0.0] - 2026-02-03
 

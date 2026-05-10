@@ -27,7 +27,7 @@ public class Options
     /// <summary>
     /// Font family name that will be used if a specific font couldn't be resolved.
     /// This font will be used as an ErrorFontName as well.
-    /// Using Arial if nothing is provided.
+    /// Using bundled Victor Mono font if nothing is provided.
     /// </summary>
     /// <example>Arial</example>
     [DefaultValue("")]

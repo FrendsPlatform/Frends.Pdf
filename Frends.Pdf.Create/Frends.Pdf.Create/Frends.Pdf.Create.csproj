@@ -19,6 +19,9 @@
 	  <None Include="FrendsTaskMetadata.json" Pack="true" PackagePath="/">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+      <EmbeddedResource Include="VictorMono-Regular.ttf" Pack="true" PackagePath="/">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>

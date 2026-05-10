@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using Frends.Pdf.Create.Definitions;
 using MigraDoc;
 using PdfSharp.Fonts;
@@ -13,16 +14,19 @@ internal class FileFontResolver : IFontResolver
     private static readonly List<FontMetadata> Fonts;
     private static string defaultFamilyName;
 
+    private const string BundledFont = "Victor Mono";
+
     static FileFontResolver()
     {
         Fonts = [];
     }
 
-    public static void Setup(string defaultName = "Arial", string customFontsLocation = null)
+    public static void Setup(string defaultName = BundledFont, string customFontsLocation = null)
     {
-        PredefinedFontsAndChars.ErrorFontName = string.IsNullOrWhiteSpace(defaultName) ? "Arial" : defaultName;
+        defaultFamilyName = string.IsNullOrWhiteSpace(defaultName) ? BundledFont : defaultName;
+        PredefinedFontsAndChars.ErrorFontName = defaultFamilyName;
+
         var fontsLocations = GetFontsLocations(customFontsLocation);
-        defaultFamilyName = string.IsNullOrWhiteSpace(defaultName) ? "Arial" : defaultName;
         List<string> fontsPaths = [];
 
         foreach (var location in fontsLocations)
@@ -70,15 +74,29 @@ internal class FileFontResolver : IFontResolver
             // try to get any font from the fallback family
             ?? Fonts.FirstOrDefault(f =>
                 f.Name.Equals(defaultFamilyName, StringComparison.CurrentCultureIgnoreCase))
-            ?? throw new Exception(
-                $"Font: {familyName} {(!isBold && !isItalic ? "regular," : string.Empty)}{(isBold ? "bold," : string.Empty)}{(isItalic ? "italic," : string.Empty)} couldn't be resolved");
+            ?? new FontMetadata(BundledFont);
 
         return new FontResolverInfo(font.FullPath);
     }
 
     public byte[] GetFont(string path)
     {
-        return File.Exists(path) ? File.ReadAllBytes(path) : throw new Exception("Could not find font file");
+        try
+        {
+            return File.Exists(path) ? File.ReadAllBytes(path) : throw new Exception("Could not find font file");
+        }
+        catch (Exception e)
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            const string resourceName = "Frends.Pdf.Create.VictorMono-Regular.ttf";
+            var fs = assembly.GetManifestResourceStream(resourceName);
+            using var ms = new MemoryStream();
+
+            if (fs != null) fs.CopyTo(ms);
+            else throw new Exception("Could not resolve bundled font file.", e);
+
+            return ms.ToArray();
+        }
     }
 
     private static string[] GetFontsLocations(string customFontsLocation)

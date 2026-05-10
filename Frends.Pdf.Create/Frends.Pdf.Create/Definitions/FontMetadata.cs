@@ -12,6 +12,10 @@ internal class FontMetadata
 
     public FontMetadata(string fontFilePath)
     {
+        FullPath = fontFilePath;
+
+        if (!File.Exists(fontFilePath)) return;
+
         using var fs = new FileStream(fontFilePath, FileMode.Open, FileAccess.Read);
         var reader = new OpenFontReader();
         var typeface = reader.Read(fs);
@@ -19,7 +23,7 @@ internal class FontMetadata
         var (bold, italic) = GetStyleFromFlags(typeface);
 
         Name = typeface.Name;
-        FullPath = fontFilePath;
+
         IsBold = bold;
         IsItalic = italic;
     }
@@ -28,6 +32,7 @@ internal class FontMetadata
     {
         bool italic = (tf.OS2Table.fsSelection & 0x01) != 0;
         bool bold = (tf.OS2Table.fsSelection & 0x20) != 0;
+
         return (bold, italic);
     }
 }
