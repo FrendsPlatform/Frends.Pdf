@@ -13,8 +13,7 @@ public class ErrorHandlerTest
     [Test]
     public void Should_Throw_Error_When_ThrowErrorOnFailure_Is_True()
     {
-        var ex = Assert.Throws<Exception>(() =>
-           Pdf.Read(DefaultInput(), DefaultOptions(), CancellationToken.None));
+        var ex = Assert.Throws<Exception>(DefaultAction(DefaultInput(), DefaultOptions()));
         Assert.That(ex, Is.Not.Null);
     }
 
@@ -32,8 +31,7 @@ public class ErrorHandlerTest
     {
         var options = DefaultOptions();
         options.ErrorMessageOnFailure = CustomErrorMessage;
-        var ex = Assert.Throws<Exception>(() =>
-            Pdf.Read(DefaultInput(), options, CancellationToken.None));
+        var ex = Assert.Throws<Exception>(DefaultAction(DefaultInput(), options));
         Assert.That(ex, Is.Not.Null);
         Assert.That(ex.Message, Contains.Substring(CustomErrorMessage));
     }
@@ -48,4 +46,7 @@ public class ErrorHandlerTest
         ThrowErrorOnFailure = true,
         ErrorMessageOnFailure = string.Empty,
     };
+
+    private static Action DefaultAction(Input input, Options options) =>
+        () => Pdf.Read(input, options, CancellationToken.None);
 }
