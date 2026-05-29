@@ -6,12 +6,6 @@ Frends task for creating Pdf file.
 ![MyGet](https://img.shields.io/myget/frends-tasks/v/Frends.Pdf.Create)
 ![Coverage](https://app-github-custom-badges.azurewebsites.net/Badge?key=FrendsPlatform/Frends.Pdf/Frends.Pdf.Create|main)
 
-# Requirements
-
-To use the task in Linux agent, you need to install packages `libgdiplus`, `apt-utils` and `libc6-dev`,
-since the task uses Windows-based graphics to draw elements to the PDF-file. These packages will emulate
-Windows based graphics in Linux. Installing those packages is only available on on-premises agent.
-
 # Installing
 
 You can install the task via FRENDS UI Task View or you can find the nuget package from the following nuget feed 'Insert nuget feed here'.
