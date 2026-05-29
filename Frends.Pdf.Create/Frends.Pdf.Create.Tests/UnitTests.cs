@@ -631,14 +631,16 @@ with some tab
     }
 
     [Test]
-    public void SettingUpNonExistingDefaultFontFails()
+    public void SettingUpNonExistingDefaultFontFallbackToBundledFont()
     {
         _paragraphContent.Text = "some text";
         _paragraphContent.FontFamily = "NonExisting";
         _options.FallbackFontName = "OtherNonExisting";
 
-        Assert.Throws<InvalidOperationException>(() => CallCreatePdf([_paragraphContent]));
-        Assert.IsFalse(File.Exists(_destinationFullPath));
+        var result = CallCreatePdf([_paragraphContent]);
+
+        Assert.IsTrue(File.Exists(_destinationFullPath));
+        Assert.IsTrue(result.Success);
     }
 
     [Test]

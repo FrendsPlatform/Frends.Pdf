@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.0] - 2026-05-06
+
+### Fixed
+
+- Fallback font is now used as an error font as well.
+- Add bundled font to use in case any other font can't be resolved.
+
 ## [2.0.0] - 2026-02-03
 
 ### Changed
@@ -9,8 +16,8 @@
 
 ### Added
 
-- Add an option to set up custom fonts directory
-- Add an option to set up default font
+- Add an option to set up a custom fonts directory
+- Add an option to set up the default font
 - Add support for Linux systems
 
 ### Fixed
