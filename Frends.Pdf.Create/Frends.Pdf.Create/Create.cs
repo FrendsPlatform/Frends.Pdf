@@ -24,10 +24,6 @@ public static class Pdf
     /// <summary>
     /// Create PDF document from given content.
     /// [Documentation](https://tasks.frends.com/tasks/frends-tasks/Frends.PDF.Create)
-    /// Requirements:
-    /// To use the task in Linux agent, you need to install packages libgdiplus, apt-utils and libc6-dev,
-    /// since the task uses Windows-based graphics to draw elements to the PDF-file. These packages will
-    /// emulate Windows based graphics in Linux. Installing those packages is only availably on on-premises agent.
     /// </summary>
     /// <param name="outputFile"></param>
     /// <param name="documentSettings"></param>
