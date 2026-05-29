@@ -14,7 +14,11 @@ internal class FontMetadata
     {
         FullPath = fontFilePath;
 
-        if (!File.Exists(fontFilePath)) return;
+        if (!File.Exists(fontFilePath))
+        {
+            Name = Path.GetFileNameWithoutExtension(fontFilePath);
+            return;
+        }
 
         using var fs = new FileStream(fontFilePath, FileMode.Open, FileAccess.Read);
         var reader = new OpenFontReader();

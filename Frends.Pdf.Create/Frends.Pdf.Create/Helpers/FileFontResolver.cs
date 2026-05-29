@@ -21,7 +21,7 @@ internal class FileFontResolver : IFontResolver
         Fonts = [];
     }
 
-    public static void Setup(string defaultName = BundledFont, string customFontsLocation = null)
+    internal static void Setup(string defaultName = BundledFont, string customFontsLocation = null)
     {
         defaultFamilyName = string.IsNullOrWhiteSpace(defaultName) ? BundledFont : defaultName;
         PredefinedFontsAndChars.ErrorFontName = defaultFamilyName;
