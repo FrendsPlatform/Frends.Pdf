@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.1.0] - 2026-05-28
+
+### Changed
+
+- Removed outdated Linux package requirements from the documentation.
+
 ## [2.0.0] - 2026-02-03
 
 ### Changed
