@@ -92,4 +92,16 @@ internal class ErrorHandlerTest
         Assert.That(ex, Is.Not.Null);
         Assert.That(ex.Message, Contains.Substring(CustomErrorMessage));
     }
+
+    [Test]
+    public void Should_Return_Failed_Result_With_Custom_Message_When_ThrowErrorOnFailure_Is_False()
+    {
+        var options = DefaultOptions();
+        options.ThrowErrorOnFailure = false;
+        options.ErrorMessageOnFailure = CustomErrorMessage;
+        var result = Pdf.Create(DefaultInput(), options, CancellationToken.None);
+        Assert.That(result.Success, Is.False);
+        Assert.That(result.Error, Is.Not.Null);
+        Assert.That(result.Error.Message, Contains.Substring(CustomErrorMessage));
+    }
 }

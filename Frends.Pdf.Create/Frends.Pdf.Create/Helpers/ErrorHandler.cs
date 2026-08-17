@@ -8,6 +8,9 @@ namespace Frends.Pdf.Create.Helpers;
 /// </summary>
 internal static class ErrorHandler
 {
+    /// <summary>
+    /// Handles an exception by either rethrowing it (based on task options) or returning a failed Result object.
+    /// </summary>
     /// <param name="exception">The exception to handle.</param>
     /// <param name="options">Task options that control whether failures are returned as a Result object or thrown.</param>
     /// <param name="throwCanceled">
