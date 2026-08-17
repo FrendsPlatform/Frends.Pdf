@@ -45,13 +45,15 @@ internal static class ErrorHandler
             ? exception.Message
             : $"{customMessage}: {exception.Message}";
 
-        return new Result(
-            false,
-            null,
-            new Error
+        return new Result
+        {
+            Success = false,
+            FileName = null,
+            Error = new Error
             {
                 Message = errorMessage,
                 AdditionalInfo = exception,
-            });
+            },
+        };
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace Frends.Pdf.Create.Definitions;
+﻿using System;
+
+namespace Frends.Pdf.Create.Definitions;
 
 /// <summary>
 /// Error information returned when the task fails and ThrowErrorOnFailure is false.
@@ -14,6 +16,6 @@ public class Error
     /// <summary>
     /// The exception that caused the failure.
     /// </summary>
-    /// <example>null</example>
-    public object AdditionalInfo { get; set; }
+    /// <example>object { Exception AdditionalInfo }</example>
+    public Exception AdditionalInfo { get; set; }
 }

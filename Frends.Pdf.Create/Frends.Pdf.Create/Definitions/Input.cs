@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace Frends.Pdf.Create.Definitions;
 
@@ -8,18 +9,27 @@ namespace Frends.Pdf.Create.Definitions;
 public class Input
 {
     /// <summary>
-    /// Output file properties (directory, filename, and action if file already exists).
+    /// PDF document destination Directory.
     /// </summary>
-    /// <example>null</example>
-    [Required]
-    public FileProperties OutputFile { get; set; }
+    /// <example>F:\outputfiles</example>
+    [DisplayFormat(DataFormatString = "Text")]
+    [DefaultValue(@"C:\Output")]
+    public string Directory { get; set; }
 
     /// <summary>
-    /// Document settings such as page size, orientation and margins.
+    /// Filename for created PDF file.
     /// </summary>
-    /// <example>null</example>
-    [Required]
-    public DocumentSettings DocumentSettings { get; set; }
+    /// <example>output.pdf</example>
+    [DisplayFormat(DataFormatString = "Text")]
+    [DefaultValue("example_file.pdf")]
+    public string FileName { get; set; }
+
+    /// <summary>
+    /// What to do if destination file already exists.
+    /// </summary>
+    /// <example>Error</example>
+    [DefaultValue(FileExistsActionEnum.Error)]
+    public FileExistsActionEnum FileExistsAction { get; set; }
 
     /// <summary>
     /// Content elements to render in the PDF document.

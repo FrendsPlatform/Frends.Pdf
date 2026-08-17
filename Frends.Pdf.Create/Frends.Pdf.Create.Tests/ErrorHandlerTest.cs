@@ -18,21 +18,9 @@ internal class ErrorHandlerTest
     {
         return new Input
         {
-            OutputFile = new FileProperties
-            {
-                Directory = "/nonexistent/path/that/does/not/exist",
-                FileName = "test.pdf",
-                FileExistsAction = FileExistsActionEnum.Error
-            },
-            DocumentSettings = new DocumentSettings
-            {
-                MarginBottomInCm = 2,
-                MarginLeftInCm = 2.5,
-                MarginRightInCm = 2.5,
-                MarginTopInCm = 2,
-                Orientation = PageOrientationEnum.Portrait,
-                Size = PageSizeEnum.A4
-            },
+            Directory = "/nonexistent/path/that/does/not/exist",
+            FileName = "test.pdf",
+            FileExistsAction = FileExistsActionEnum.Error,
             Content = new DocumentContent
             {
                 Contents = new[]
@@ -60,7 +48,13 @@ internal class ErrorHandlerTest
         {
             ThrowErrorOnFailure = true,
             ErrorMessageOnFailure = string.Empty,
-            CustomFontsLocation = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../Files")
+            CustomFontsLocation = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../Files"),
+            MarginBottomInCm = 2,
+            MarginLeftInCm = 2.5,
+            MarginRightInCm = 2.5,
+            MarginTopInCm = 2,
+            Orientation = PageOrientationEnum.Portrait,
+            Size = PageSizeEnum.A4
         };
     }
 
