@@ -16,6 +16,6 @@ public class Error
     /// <summary>
     /// The exception that caused the failure.
     /// </summary>
-    /// <example>object { Exception AdditionalInfo }</example>
+    /// <example>System.IO.FileNotFoundException: Could not find file 'example.pdf'</example>
     public Exception AdditionalInfo { get; set; }
 }
