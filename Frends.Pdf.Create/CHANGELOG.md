@@ -4,8 +4,8 @@
 
 ### Changed
 
-- [Breaking Change] Task input parameters (output file properties, document settings, and content) are now grouped under a single `Input` parameter to align with Frends platform standards.
-- [Breaking Change] Task method now requires a `CancellationToken` parameter.
+- [Breaking Change] Task input parameters (output file properties, document settings, and content) are now grouped under `Input` and `Options` parameter to align with Frends platform standards.
+- Task method now requires a `CancellationToken` parameter.
 - The `Options` class now includes an `ErrorMessageOnFailure` property, allowing you to customize the error message returned or thrown when the task fails.
 - When `ThrowErrorOnFailure` is false, the result now includes an `Error` object with the failure details.
 
