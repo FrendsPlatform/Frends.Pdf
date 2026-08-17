@@ -5,9 +5,20 @@ namespace Frends.Pdf.Create.Definitions;
 
 internal class FontMetadata
 {
+    /// <summary>Font family name of the font file.</summary>
+    /// <example>Arial</example>
     public string Name { get; }
+
+    /// <summary>Absolute path to the font file on disk.</summary>
+    /// <example>C:\Windows\Fonts\arial.ttf</example>
     public string FullPath { get; }
+
+    /// <summary>Whether the font is a bold variant.</summary>
+    /// <example>false</example>
     public bool IsBold { get; }
+
+    /// <summary>Whether the font is an italic variant.</summary>
+    /// <example>false</example>
     public bool IsItalic { get; }
 
     public FontMetadata(string fontFilePath)

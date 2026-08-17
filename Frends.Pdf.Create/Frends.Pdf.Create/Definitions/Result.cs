@@ -17,9 +17,16 @@ public class Result
     /// <example>C:\tmp\example_file.pdf</example>
     public string FileName { get; private set; }
 
-    internal Result(bool success, string fileName)
+    /// <summary>
+    /// Error details. Null when Success is true.
+    /// </summary>
+    /// <example>null</example>
+    public Error Error { get; private set; }
+
+    internal Result(bool success, string fileName, Error error = null)
     {
         Success = success;
         FileName = fileName;
+        Error = error;
     }
 }

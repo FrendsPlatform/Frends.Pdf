@@ -126,10 +126,15 @@ public class UnitTests
     {
         var fileProperties = properties == null ? _fileProperties : properties;
 
-        return Pdf.Create(fileProperties, _docSettings, new DocumentContent
+        return Pdf.Create(new Input
         {
-            Contents = contents
-        }, _options);
+            OutputFile = fileProperties,
+            DocumentSettings = _docSettings,
+            Content = new DocumentContent
+            {
+                Contents = contents
+            }
+        }, _options, default);
     }
 
     [Test]
@@ -260,7 +265,7 @@ with some tab
         header.Text = @"This is a header";
         var errorMessage = "Path to header graphics was empty or the file does not exist: " + logoPath;
 
-        var result = Assert.Throws<FileNotFoundException>(() => CallCreatePdf(new PageContentElement[]
+        var result = Assert.Throws<Exception>(() => CallCreatePdf(new PageContentElement[]
         {
             header
         }));
@@ -304,14 +309,18 @@ with some tab
             ThrowErrorOnFailure = false
         };
 
-        Pdf.Create(_fileProperties, _docSettings,
-            new DocumentContent
+        Pdf.Create(new Input
+        {
+            OutputFile = _fileProperties,
+            DocumentSettings = _docSettings,
+            Content = new DocumentContent
             {
                 Contents = new PageContentElement[]
                 {
                     table1
                 }
-            }, options);
+            }
+        }, options, default);
 
         Assert.IsFalse(File.Exists(_destinationFullPath));
     }
@@ -340,14 +349,18 @@ with some tab
             Size = PageSizeEnum.A4
         };
 
-        var result = Pdf.Create(fileProperties, settings,
-            new DocumentContent
+        var result = Pdf.Create(new Input
+        {
+            OutputFile = fileProperties,
+            DocumentSettings = settings,
+            Content = new DocumentContent
             {
                 Contents = new PageContentElement[]
                 {
                     _paragraphContent
                 }
-            }, _options);
+            }
+        }, _options, default);
 
         Assert.IsTrue(File.Exists(_destinationFullPath));
         Assert.IsTrue(result.Success);
@@ -355,14 +368,18 @@ with some tab
         settings.Title = "";
         settings.Author = "";
 
-        result = Pdf.Create(fileProperties, settings,
-            new DocumentContent
+        result = Pdf.Create(new Input
+        {
+            OutputFile = fileProperties,
+            DocumentSettings = settings,
+            Content = new DocumentContent
             {
                 Contents = new PageContentElement[]
                 {
                     _paragraphContent
                 }
-            }, _options);
+            }
+        }, _options, default);
 
         Assert.IsTrue(File.Exists(_destinationFullPath));
         Assert.IsTrue(result.Success);
@@ -370,14 +387,18 @@ with some tab
         settings.Title = "Title";
         settings.Author = "Tester";
 
-        result = Pdf.Create(fileProperties, settings,
-            new DocumentContent
+        result = Pdf.Create(new Input
+        {
+            OutputFile = fileProperties,
+            DocumentSettings = settings,
+            Content = new DocumentContent
             {
                 Contents = new PageContentElement[]
                 {
                     _paragraphContent
                 }
-            }, _options);
+            }
+        }, _options, default);
 
         Assert.IsTrue(File.Exists(_destinationFullPath));
         Assert.IsTrue(result.Success);
@@ -402,7 +423,7 @@ with some tab
             BorderWidthInPt = 0.5,
             ImageHeightInCm = 0.5
         };
-        var ex = Assert.Throws<FileNotFoundException>(() => CallCreatePdf(new PageContentElement[]
+        var ex = Assert.Throws<Exception>(() => CallCreatePdf(new PageContentElement[]
         {
             _header, _footer, _title, _paragraphContent, new PageContentElement
             {

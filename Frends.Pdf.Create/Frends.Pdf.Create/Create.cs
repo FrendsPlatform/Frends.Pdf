@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using Frends.Pdf.Create.Definitions;
 using Frends.Pdf.Create.Helpers;
 using MigraDoc.DocumentObjectModel;
@@ -25,16 +26,14 @@ public static class Pdf
     /// Create PDF document from given content.
     /// [Documentation](https://tasks.frends.com/tasks/frends-tasks/Frends.PDF.Create)
     /// </summary>
-    /// <param name="outputFile"></param>
-    /// <param name="documentSettings"></param>
-    /// <param name="content"></param>
-    /// <param name="options"></param>
-    /// <returns>Object { bool Success, string FileName }</returns>
+    /// <param name="input">Input parameters: output file properties, document settings, and content.</param>
+    /// <param name="options">Additional task options.</param>
+    /// <param name="cancellationToken">Token to cancel the operation.</param>
+    /// <returns>Object { bool Success, string FileName, Error Error }</returns>
     public static Result Create(
-        [PropertyTab] FileProperties outputFile,
-        [PropertyTab] DocumentSettings documentSettings,
-        [PropertyTab] DocumentContent content,
-        [PropertyTab] Options options
+        [PropertyTab] Input input,
+        [PropertyTab] Options options,
+        CancellationToken cancellationToken
     )
     {
         try
@@ -42,12 +41,12 @@ public static class Pdf
             GlobalFontSettings.FontResolver = new FileFontResolver();
             FileFontResolver.Setup(options.FallbackFontName, options.CustomFontsLocation);
             var document = new Document();
-            if (!string.IsNullOrWhiteSpace(documentSettings.Title)) document.Info.Title = documentSettings.Title;
-            if (!string.IsNullOrWhiteSpace(documentSettings.Author)) document.Info.Author = documentSettings.Author;
+            if (!string.IsNullOrWhiteSpace(input.DocumentSettings.Title)) document.Info.Title = input.DocumentSettings.Title;
+            if (!string.IsNullOrWhiteSpace(input.DocumentSettings.Author)) document.Info.Author = input.DocumentSettings.Author;
 
-            AddContent(document, documentSettings, content);
+            AddContent(document, input.DocumentSettings, input.Content);
 
-            var fileName = DetermineFileName(outputFile);
+            var fileName = DetermineFileName(input.OutputFile);
 
             // Save document.
             var pdfRenderer = new PdfDocumentRenderer
@@ -61,11 +60,9 @@ public static class Pdf
 
             return new Result(true, fileName);
         }
-        catch
+        catch (Exception ex)
         {
-            if (options.ThrowErrorOnFailure) throw;
-
-            return new Result(false, null);
+            return ex.Handle(options);
         }
     }
 

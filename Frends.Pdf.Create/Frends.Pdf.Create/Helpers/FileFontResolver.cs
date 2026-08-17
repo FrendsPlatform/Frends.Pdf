@@ -51,6 +51,7 @@ internal class FileFontResolver : IFontResolver
         }
     }
 
+    /// <summary>Resolves font typeface information for a given family name and style.</summary>
     public FontResolverInfo ResolveTypeface(string familyName, bool isBold, bool isItalic)
     {
         var font =
@@ -79,6 +80,7 @@ internal class FileFontResolver : IFontResolver
         return new FontResolverInfo(font.FullPath);
     }
 
+    /// <summary>Returns the raw font bytes for the given font file path.</summary>
     public byte[] GetFont(string path)
     {
         try
