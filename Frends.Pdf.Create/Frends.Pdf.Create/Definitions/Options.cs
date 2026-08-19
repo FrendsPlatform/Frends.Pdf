@@ -9,22 +9,6 @@ namespace Frends.Pdf.Create.Definitions;
 public class Options
 {
     /// <summary>
-    /// True: Throws error on failure
-    /// False: Returns an object{ Success = false }
-    /// </summary>
-    /// <example>true</example>
-    [DefaultValue(true)]
-    public bool ThrowErrorOnFailure { get; set; } = true;
-
-    /// <summary>
-    /// Overrides the error message on failure.
-    /// </summary>
-    /// <example>PDF creation failed: check input parameters</example>
-    [DisplayFormat(DataFormatString = "Text")]
-    [DefaultValue("")]
-    public string ErrorMessageOnFailure { get; set; } = string.Empty;
-
-    /// <summary>
     /// Optional PDF document title.
     /// </summary>
     /// <example>Very important document.</example>
@@ -97,4 +81,20 @@ public class Options
     /// <example>Arial</example>
     [DefaultValue("")]
     public string FallbackFontName { get; set; } = string.Empty;
+
+    /// <summary>
+    /// True: Throws error on failure
+    /// False: Returns an object{ Success = false }
+    /// </summary>
+    /// <example>true</example>
+    [DefaultValue(true)]
+    public bool ThrowErrorOnFailure { get; set; } = true;
+
+    /// <summary>
+    /// Overrides the error message on failure.
+    /// </summary>
+    /// <example>PDF creation failed: check input parameters</example>
+    [DisplayFormat(DataFormatString = "Text")]
+    [DefaultValue("")]
+    public string ErrorMessageOnFailure { get; set; } = string.Empty;
 }
