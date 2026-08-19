@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.3.0] - 2026-08-17
+
+### Changed
+
+- Updated copyright metadata to comply with platform standards.
+
 ## [1.2.0] - 2026-02-23
 
 ### Fixed
