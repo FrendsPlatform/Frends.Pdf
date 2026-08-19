@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using Frends.Pdf.Create.Definitions;
 using Frends.Pdf.Create.Helpers;
 using MigraDoc.DocumentObjectModel;
@@ -25,16 +26,14 @@ public static class Pdf
     /// Create PDF document from given content.
     /// [Documentation](https://tasks.frends.com/tasks/frends-tasks/Frends.PDF.Create)
     /// </summary>
-    /// <param name="outputFile"></param>
-    /// <param name="documentSettings"></param>
-    /// <param name="content"></param>
-    /// <param name="options"></param>
-    /// <returns>Object { bool Success, string FileName }</returns>
+    /// <param name="input">Input parameters: output file properties, document settings, and content.</param>
+    /// <param name="options">Additional task options.</param>
+    /// <param name="cancellationToken">Token to cancel the operation.</param>
+    /// <returns>Object { bool Success, string FileName, Error Error }</returns>
     public static Result Create(
-        [PropertyTab] FileProperties outputFile,
-        [PropertyTab] DocumentSettings documentSettings,
-        [PropertyTab] DocumentContent content,
-        [PropertyTab] Options options
+        [PropertyTab] Input input,
+        [PropertyTab] Options options,
+        CancellationToken cancellationToken
     )
     {
         try
@@ -42,12 +41,12 @@ public static class Pdf
             GlobalFontSettings.FontResolver = new FileFontResolver();
             FileFontResolver.Setup(options.FallbackFontName, options.CustomFontsLocation);
             var document = new Document();
-            if (!string.IsNullOrWhiteSpace(documentSettings.Title)) document.Info.Title = documentSettings.Title;
-            if (!string.IsNullOrWhiteSpace(documentSettings.Author)) document.Info.Author = documentSettings.Author;
+            if (!string.IsNullOrWhiteSpace(options.Title)) document.Info.Title = options.Title;
+            if (!string.IsNullOrWhiteSpace(options.Author)) document.Info.Author = options.Author;
 
-            AddContent(document, documentSettings, content);
+            AddContent(document, options, input.Content);
 
-            var fileName = DetermineFileName(outputFile);
+            var fileName = DetermineFileName(input);
 
             // Save document.
             var pdfRenderer = new PdfDocumentRenderer
@@ -59,24 +58,22 @@ public static class Pdf
             pdfRenderer.RenderDocument();
             pdfRenderer.PdfDocument.Save(fileName);
 
-            return new Result(true, fileName);
+            return new Result { Success = true, FileName = fileName };
         }
-        catch
+        catch (Exception ex)
         {
-            if (options.ThrowErrorOnFailure) throw;
-
-            return new Result(false, null);
+            return ex.Handle(options);
         }
     }
 
     #region HelperMethods
 
-    private static void AddContent(Document document, DocumentSettings documentSettings, DocumentContent content)
+    private static void AddContent(Document document, Options options, DocumentContent content)
     {
         // Get the selected page size.
-        PageSetup.GetPageSize(documentSettings.Size.ConvertEnum<PageFormat>(), out Unit width, out Unit height);
+        PageSetup.GetPageSize(options.Size.ConvertEnum<PageFormat>(), out Unit width, out Unit height);
         var section = document.AddSection();
-        SetupPage(section.PageSetup, width, height, documentSettings);
+        SetupPage(section.PageSetup, width, height, options);
 
         // Index for stylename.
         var elementNumber = 0;
@@ -95,7 +92,7 @@ public static class Pdf
                     break;
                 case ElementType.PageBreak:
                     section = document.AddSection();
-                    SetupPage(section.PageSetup, width, height, documentSettings);
+                    SetupPage(section.PageSetup, width, height, options);
 
                     break;
                 case ElementType.Header:
@@ -126,23 +123,23 @@ public static class Pdf
         }
     }
 
-    private static string DetermineFileName(FileProperties outputFile)
+    private static string DetermineFileName(Input input)
     {
-        var fileName = Path.Combine(outputFile.Directory, outputFile.FileName);
+        var fileName = Path.Combine(input.Directory, input.FileName);
         var fileNameIndex = 1;
 
-        if (File.Exists(fileName) && outputFile.FileExistsAction == FileExistsActionEnum.Error)
+        if (File.Exists(fileName) && input.FileExistsAction == FileExistsActionEnum.Error)
             throw new Exception("Output file already exists: " + fileName);
 
-        while (File.Exists(fileName) && outputFile.FileExistsAction != FileExistsActionEnum.Overwrite)
+        while (File.Exists(fileName) && input.FileExistsAction != FileExistsActionEnum.Overwrite)
         {
-            switch (outputFile.FileExistsAction)
+            switch (input.FileExistsAction)
             {
                 case FileExistsActionEnum.Error:
                     throw new Exception($"File {fileName} already exists.");
                 case FileExistsActionEnum.Rename:
-                    fileName = Path.Combine(outputFile.Directory,
-                        $"{Path.GetFileNameWithoutExtension(outputFile.FileName)}_({fileNameIndex}){Path.GetExtension(outputFile.FileName)}");
+                    fileName = Path.Combine(input.Directory,
+                        $"{Path.GetFileNameWithoutExtension(input.FileName)}_({fileNameIndex}){Path.GetExtension(input.FileName)}");
 
                     break;
             }
@@ -153,15 +150,15 @@ public static class Pdf
         return fileName;
     }
 
-    private static void SetupPage(PageSetup setup, Unit pageWidth, Unit pageHeight, DocumentSettings documentSettings)
+    private static void SetupPage(PageSetup setup, Unit pageWidth, Unit pageHeight, Options options)
     {
-        setup.Orientation = documentSettings.Orientation.ConvertEnum<Orientation>();
+        setup.Orientation = options.Orientation.ConvertEnum<Orientation>();
         setup.PageHeight = pageHeight;
         setup.PageWidth = pageWidth;
-        setup.LeftMargin = new Unit(documentSettings.MarginLeftInCm, UnitType.Centimeter);
-        setup.TopMargin = new Unit(documentSettings.MarginTopInCm, UnitType.Centimeter);
-        setup.RightMargin = new Unit(documentSettings.MarginRightInCm, UnitType.Centimeter);
-        setup.BottomMargin = new Unit(documentSettings.MarginBottomInCm, UnitType.Centimeter);
+        setup.LeftMargin = new Unit(options.MarginLeftInCm, UnitType.Centimeter);
+        setup.TopMargin = new Unit(options.MarginTopInCm, UnitType.Centimeter);
+        setup.RightMargin = new Unit(options.MarginRightInCm, UnitType.Centimeter);
+        setup.BottomMargin = new Unit(options.MarginBottomInCm, UnitType.Centimeter);
     }
 
     private static void SetParagraphStyle(Style style, PageContentElement pageContent)

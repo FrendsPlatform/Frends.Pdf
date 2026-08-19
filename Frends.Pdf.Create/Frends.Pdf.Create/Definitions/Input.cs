@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations;
 namespace Frends.Pdf.Create.Definitions;
 
 /// <summary>
-/// Page size options.
+/// Input parameters for the Create task.
 /// </summary>
-public class FileProperties
+public class Input
 {
     /// <summary>
     /// PDF document destination Directory.
@@ -30,4 +30,11 @@ public class FileProperties
     /// <example>Error</example>
     [DefaultValue(FileExistsActionEnum.Error)]
     public FileExistsActionEnum FileExistsAction { get; set; }
+
+    /// <summary>
+    /// Content elements to render in the PDF document.
+    /// </summary>
+    /// <example>null</example>
+    [Required]
+    public DocumentContent Content { get; set; }
 }
