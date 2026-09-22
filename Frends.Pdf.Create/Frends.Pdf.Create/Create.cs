@@ -58,7 +58,11 @@ public static class Pdf
             pdfRenderer.RenderDocument();
             pdfRenderer.PdfDocument.Save(fileName);
 
-            return new Result { Success = true, FileName = fileName };
+            return new Result
+            {
+                Success = true,
+                FileName = fileName
+            };
         }
         catch (Exception ex)
         {
@@ -152,9 +156,10 @@ public static class Pdf
 
     private static void SetupPage(PageSetup setup, Unit pageWidth, Unit pageHeight, Options options)
     {
-        setup.Orientation = options.Orientation.ConvertEnum<Orientation>();
+        if (options.Orientation == PageOrientationEnum.Landscape) (pageWidth, pageHeight) = (pageHeight, pageWidth);
         setup.PageHeight = pageHeight;
         setup.PageWidth = pageWidth;
+        setup.Orientation = options.Orientation.ConvertEnum<Orientation>();
         setup.LeftMargin = new Unit(options.MarginLeftInCm, UnitType.Centimeter);
         setup.TopMargin = new Unit(options.MarginTopInCm, UnitType.Centimeter);
         setup.RightMargin = new Unit(options.MarginRightInCm, UnitType.Centimeter);
