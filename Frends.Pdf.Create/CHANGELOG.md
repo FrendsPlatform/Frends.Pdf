@@ -1,5 +1,11 @@
 # Changelog
 
+## [3.1.0] - 2026-09-22
+
+### Fixed
+
+- Orientation of the page is set correctly now.
+
 ## [3.0.0] - 2026-08-17
 
 ### Changed

@@ -2,6 +2,7 @@
 using System.IO;
 using Frends.Pdf.Create.Definitions;
 using NUnit.Framework;
+using PdfSharp.Pdf.IO;
 
 namespace Frends.Pdf.Create.Tests;
 
@@ -150,6 +151,24 @@ with some tab
 
         Assert.IsTrue(File.Exists(_destinationFullPath));
         Assert.IsTrue(result.Success);
+    }
+
+    [Test]
+    public void Create_LandscapeOrientationProducesLandscapePdfTest()
+    {
+        _input.FileExistsAction = FileExistsActionEnum.Overwrite;
+        _options.Orientation = PageOrientationEnum.Landscape;
+        _paragraphContent.Text = "Landscape orientation test";
+
+        var result = CallCreatePdf([_paragraphContent]);
+
+        Assert.IsTrue(result.Success);
+
+        using var pdfDocument = PdfReader.Open(_destinationFullPath, PdfDocumentOpenMode.ReadOnly);
+        var page = pdfDocument.Pages[0];
+
+        Assert.Greater(page.Width, page.Height,
+            "Expected a landscape page (wider than tall) when Orientation is set to Landscape.");
     }
 
     [Test]
