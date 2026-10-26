@@ -9,10 +9,10 @@ namespace Frends.Pdf.Create.Helpers;
 
 internal static class FileFontResolver
 {
+    private const string BundledFont = "Victor Mono";
+
     private static readonly List<FontMetadata> Fonts;
     private static string defaultFamilyName;
-
-    private const string BundledFont = "Victor Mono";
 
     static FileFontResolver()
     {
@@ -49,26 +49,35 @@ internal static class FileFontResolver
     }
 
     /// <summary>Resolves the font file for a given family name and style.</summary>
+    /// <param name="familyName">Requested font family.</param>
+    /// <param name="isBold">Whether the requested font is bold.</param>
+    /// <param name="isItalic">Whether the requested font is italic.</param>
+    /// <returns>Metadata for the matching font or the bundled fallback.</returns>
     internal static FontMetadata Resolve(string familyName, bool isBold, bool isItalic)
     {
         var font =
+
             // try to get the font we are looking for
             Fonts.FirstOrDefault(f =>
                 f.Name.Equals(familyName, StringComparison.CurrentCultureIgnoreCase)
                 && f.IsBold == isBold
                 && f.IsItalic == isItalic)
+
             // try to get a regular font from family
             ?? Fonts.FirstOrDefault(f =>
                 f.Name.Equals(familyName, StringComparison.CurrentCultureIgnoreCase)
                 && !f.IsBold
                 && !f.IsItalic)
+
             // try to get any font from the family
             ?? Fonts.FirstOrDefault(f => f.Name.Equals(familyName, StringComparison.CurrentCultureIgnoreCase))
+
             // try to get a regular fallback font
             ?? Fonts.FirstOrDefault(f =>
                 f.Name.Equals(defaultFamilyName, StringComparison.CurrentCultureIgnoreCase)
                 && !f.IsBold
                 && !f.IsItalic)
+
             // try to get any font from the fallback family
             ?? Fonts.FirstOrDefault(f =>
                 f.Name.Equals(defaultFamilyName, StringComparison.CurrentCultureIgnoreCase))
@@ -78,6 +87,8 @@ internal static class FileFontResolver
     }
 
     /// <summary>Returns the raw font bytes for the given font file path.</summary>
+    /// <param name="path">Font file path.</param>
+    /// <returns>The font bytes, or the bundled font bytes when the file cannot be read.</returns>
     internal static byte[] GetFont(string path)
     {
         try
@@ -118,7 +129,10 @@ internal static class FileFontResolver
                 Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".fonts"),
             ]);
         }
-        else throw new Exception("Unsupported operating system");
+        else
+        {
+            throw new Exception("Unsupported operating system");
+        }
 
         foreach (var potentialPath in potentialPaths.Where(potentialPath =>
                      Directory.Exists(potentialPath) && !result.Contains(potentialPath)))

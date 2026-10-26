@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Frends.Pdf.Create.Definitions;
 
 namespace Frends.Pdf.Create.Helpers;

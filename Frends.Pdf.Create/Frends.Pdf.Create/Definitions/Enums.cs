@@ -1,4 +1,4 @@
-﻿namespace Frends.Pdf.Create.Definitions;
+namespace Frends.Pdf.Create.Definitions;
 
 /// <summary>
 /// Actions if the output document already exists.
@@ -9,14 +9,16 @@ public enum FileExistsActionEnum
     /// Throw error.
     /// </summary>
     Error,
+
     /// <summary>
     /// Overwrite the existing document.
     /// </summary>
     Overwrite,
+
     /// <summary>
     /// Rename the new document.
     /// </summary>
-    Rename
+    Rename,
 }
 
 #pragma warning disable CS1591 // Self-explanatory enums.
@@ -25,17 +27,38 @@ public enum FileExistsActionEnum
 /// </summary>
 public enum PageSizeEnum
 {
+    /// <summary>A0 paper size.</summary>
     A0,
+
+    /// <summary>A1 paper size.</summary>
     A1,
+
+    /// <summary>A2 paper size.</summary>
     A2,
+
+    /// <summary>A3 paper size.</summary>
     A3,
+
+    /// <summary>A4 paper size.</summary>
     A4,
+
+    /// <summary>A5 paper size.</summary>
     A5,
+
+    /// <summary>A6 paper size.</summary>
     A6,
+
+    /// <summary>B5 paper size.</summary>
     B5,
+
+    /// <summary>Ledger paper size.</summary>
     Ledger,
+
+    /// <summary>Legal paper size.</summary>
     Legal,
-    Letter
+
+    /// <summary>Letter paper size.</summary>
+    Letter,
 }
 #pragma warning restore CS1591
 
@@ -45,8 +68,11 @@ public enum PageSizeEnum
 /// </summary>
 public enum PageOrientationEnum
 {
+    /// <summary>Portrait orientation.</summary>
     Portrait,
-    Landscape
+
+    /// <summary>Landscape orientation.</summary>
+    Landscape,
 }
 #pragma warning restore CS1591
 
@@ -56,12 +82,23 @@ public enum PageOrientationEnum
 /// </summary>
 public enum ElementType
 {
+    /// <summary>Paragraph content.</summary>
     Paragraph,
+
+    /// <summary>Image content.</summary>
     Image,
+
+    /// <summary>Page break.</summary>
     PageBreak,
+
+    /// <summary>Header content.</summary>
     Header,
+
+    /// <summary>Footer content.</summary>
     Footer,
-    Table
+
+    /// <summary>Table content.</summary>
+    Table,
 }
 #pragma warning restore CS1591
 
@@ -71,10 +108,17 @@ public enum ElementType
 /// </summary>
 public enum ParagraphAlignmentEnum
 {
+    /// <summary>Align text to the left.</summary>
     Left,
+
+    /// <summary>Center text.</summary>
     Center,
+
+    /// <summary>Justify text.</summary>
     Justify,
-    Right
+
+    /// <summary>Align text to the right.</summary>
+    Right,
 }
 #pragma warning restore CS1591
 
@@ -84,9 +128,14 @@ public enum ParagraphAlignmentEnum
 /// </summary>
 public enum ImageAlignmentEnum
 {
+    /// <summary>Align the image to the left.</summary>
     Left,
+
+    /// <summary>Center the image.</summary>
     Center,
-    Right
+
+    /// <summary>Align the image to the right.</summary>
+    Right,
 }
 #pragma warning restore CS1591
 
@@ -96,11 +145,20 @@ public enum ImageAlignmentEnum
 /// </summary>
 public enum FontStyleEnum
 {
+    /// <summary>Regular font style.</summary>
     Regular,
+
+    /// <summary>Bold font style.</summary>
     Bold,
+
+    /// <summary>Italic font style.</summary>
     Italic,
+
+    /// <summary>Bold and italic font style.</summary>
     BoldItalic,
-    Underline
+
+    /// <summary>Underlined font style.</summary>
+    Underline,
 }
 #pragma warning restore CS1591
 
@@ -113,18 +171,21 @@ public enum HeaderFooterStyleEnum
     /// Add only text.
     /// </summary>
     Text,
+
     /// <summary>
     /// Add text and page numbers.
     /// </summary>
     TextPagenum,
+
     /// <summary>
     /// Add text and image.
     /// </summary>
     LogoText,
+
     /// <summary>
     /// Add text, image and page numbers.
     /// </summary>
-    LogoTextPagenum
+    LogoTextPagenum,
 }
 
 /// <summary>
@@ -136,14 +197,16 @@ public enum TableTypeEnum
     /// Normal table in the document.
     /// </summary>
     Table,
+
     /// <summary>
     /// Add table to header.
     /// </summary>
     Header,
+
     /// <summary>
     /// Add table to footer.
     /// </summary>
-    Footer
+    Footer,
 }
 
 /// <summary>
@@ -155,14 +218,16 @@ public enum TableColumnType
     /// Text data.
     /// </summary>
     Text,
+
     /// <summary>
     /// Images.
     /// </summary>
     Image,
+
     /// <summary>
     /// Page numbers.
     /// </summary>
-    PageNum
+    PageNum,
 }
 
 #pragma warning disable CS1591 // Self-explanatory enums.
@@ -171,9 +236,16 @@ public enum TableColumnType
 /// </summary>
 public enum TableBorderStyle
 {
+    /// <summary>No table border.</summary>
     None,
+
+    /// <summary>Border along the top of the table.</summary>
     Top,
+
+    /// <summary>Border along the bottom of the table.</summary>
     Bottom,
-    All
+
+    /// <summary>Border around all sides of the table.</summary>
+    All,
 }
 #pragma warning restore CS1591

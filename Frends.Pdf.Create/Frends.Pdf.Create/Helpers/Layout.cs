@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,6 +6,8 @@ using Frends.Pdf.Create.Definitions;
 using UglyToad.PdfPig.Core;
 using UglyToad.PdfPig.Writer;
 
+#pragma warning disable SA1402
+#pragma warning disable SA1204
 namespace Frends.Pdf.Create.Helpers;
 
 internal static class Units
@@ -110,8 +112,15 @@ internal sealed class TextStyle
         }
     }
 
-    internal static TextStyle FromFontStyle(FontStyleEnum fontStyle, string family, double size,
-        double lineSpacing, bool exact, double before, double after, ParagraphAlignmentEnum alignment)
+    internal static TextStyle FromFontStyle(
+        FontStyleEnum fontStyle,
+        string family,
+        double size,
+        double lineSpacing,
+        bool exact,
+        double before,
+        double after,
+        ParagraphAlignmentEnum alignment)
     {
         return new TextStyle
         {
@@ -154,6 +163,11 @@ internal abstract class LayoutItem
 internal static class TextLayout
 {
     /// <summary>Splits text into lines. Whitespace characters become single spaces.</summary>
+    /// <param name="fonts">Font provider used to measure text.</param>
+    /// <param name="style">Style applied to the text.</param>
+    /// <param name="text">Text to wrap.</param>
+    /// <param name="width">Maximum width of each line.</param>
+    /// <returns>The wrapped text lines.</returns>
     internal static List<string> Wrap(FontProvider fonts, TextStyle style, string text, double width)
     {
         var result = new List<string>();
@@ -174,6 +188,7 @@ internal static class TextLayout
         return sb.ToString();
     }
 
+#pragma warning disable SA1202
     private static IEnumerable<string> WrapLine(FontProvider fonts, TextStyle style, string line, double width)
     {
         var lines = new List<string>();
@@ -242,8 +257,23 @@ internal static class TextLayout
     }
 
     /// <summary>Draws one line of text inside a box that starts at x with the given width.</summary>
-    internal static void DrawLine(DrawContext ctx, TextStyle style, string text, double x, double width,
-        double top, double lineHeight, bool justify)
+    /// <param name="ctx">Drawing context for the current page.</param>
+    /// <param name="style">Style applied to the text.</param>
+    /// <param name="text">Text to draw.</param>
+    /// <param name="x">Left edge of the text box.</param>
+    /// <param name="width">Width of the text box.</param>
+    /// <param name="top">Top edge of the text box.</param>
+    /// <param name="lineHeight">Height of the line.</param>
+    /// <param name="justify">Whether to justify the line.</param>
+    internal static void DrawLine(
+        DrawContext ctx,
+        TextStyle style,
+        string text,
+        double x,
+        double width,
+        double top,
+        double lineHeight,
+        bool justify)
     {
         if (string.IsNullOrEmpty(text)) return;
 
@@ -281,6 +311,7 @@ internal static class TextLayout
         ctx.Page.AddText(text, style.Size, ctx.Point(startX, baseline), font);
         DrawUnderline(ctx, style, startX, baseline, textWidth);
     }
+#pragma warning restore SA1202
 
     private static void DrawUnderline(DrawContext ctx, TextStyle style, double x, double baseline, double width)
     {
@@ -399,8 +430,15 @@ internal sealed class PageNumberCell : Cell
 
     internal override void Draw(DrawContext ctx, double x, double top)
     {
-        TextLayout.DrawLine(ctx, style, $"{ctx.PageNumber} ({ctx.PageCount})", x + TextCell.Padding,
-            Width - (2 * TextCell.Padding), top + style.SpaceBefore, style.LineHeight, false);
+        TextLayout.DrawLine(
+            ctx,
+            style,
+            $"{ctx.PageNumber} ({ctx.PageCount})",
+            x + TextCell.Padding,
+            Width - (2 * TextCell.Padding),
+            top + style.SpaceBefore,
+            style.LineHeight,
+            false);
     }
 }
 
@@ -478,3 +516,6 @@ internal sealed class RowItem : LayoutItem
             ctx.Line(x, top + Height, x + totalWidth, top + Height, borderWidth);
     }
 }
+
+#pragma warning restore SA1402
+#pragma warning restore SA1204

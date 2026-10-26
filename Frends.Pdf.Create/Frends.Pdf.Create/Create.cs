@@ -23,8 +23,7 @@ public static class Pdf
     public static Result Create(
         [PropertyTab] Input input,
         [PropertyTab] Options options,
-        CancellationToken cancellationToken
-    )
+        CancellationToken cancellationToken)
     {
         try
         {
@@ -37,7 +36,7 @@ public static class Pdf
             return new Result
             {
                 Success = true,
-                FileName = fileName
+                FileName = fileName,
             };
         }
         catch (Exception ex)
@@ -61,7 +60,8 @@ public static class Pdf
                 case FileExistsActionEnum.Error:
                     throw new Exception($"File {fileName} already exists.");
                 case FileExistsActionEnum.Rename:
-                    fileName = Path.Combine(input.Directory,
+                    fileName = Path.Combine(
+                        input.Directory,
                         $"{Path.GetFileNameWithoutExtension(input.FileName)}_({fileNameIndex}){Path.GetExtension(input.FileName)}");
 
                     break;
@@ -72,6 +72,4 @@ public static class Pdf
 
         return fileName;
     }
-
-
 }

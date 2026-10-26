@@ -26,6 +26,41 @@ internal sealed class DocumentComposer
     private readonly double bottom;
     private readonly List<ComposedSection> sections = [];
 
+    private static (double Width, double Height) GetPageSize(PageSizeEnum size)
+    {
+        return size switch
+        {
+            PageSizeEnum.A0 => (2383.94, 3370.39),
+            PageSizeEnum.A1 => (1683.78, 2383.94),
+            PageSizeEnum.A2 => (1190.55, 1683.78),
+            PageSizeEnum.A3 => (841.89, 1190.55),
+            PageSizeEnum.A4 => (595.275, 841.89),
+            PageSizeEnum.A5 => (419.53, 595.275),
+            PageSizeEnum.A6 => (297.64, 419.53),
+            PageSizeEnum.B5 => (498.9, 708.66),
+            PageSizeEnum.Ledger => (792, 1224),
+            PageSizeEnum.Legal => (612, 1008),
+            _ => (612, 792),
+        };
+    }
+
+    private static TextStyle ElementStyle(PageContentElement element)
+    {
+        return TextStyle.FromFontStyle(
+            element.FontStyle,
+            element.FontFamily,
+            element.FontSize,
+            element.LineSpacingInPt,
+            true,
+            element.SpacingBeforeInPt,
+            element.SpacingAfterInPt,
+            element.ParagraphAlignment);
+    }
+
+    private static string Format(double value) =>
+        Math.Round(value, 2).ToString(CultureInfo.InvariantCulture);
+
+#pragma warning disable SA1201
     internal DocumentComposer(Options options)
     {
         this.options = options;
@@ -45,6 +80,7 @@ internal sealed class DocumentComposer
         if (!string.IsNullOrWhiteSpace(options.Title)) builder.DocumentInformation.Title = options.Title;
         if (!string.IsNullOrWhiteSpace(options.Author)) builder.DocumentInformation.Author = options.Author;
     }
+#pragma warning restore SA1201
 
     internal byte[] Compose(DocumentContent content)
     {
@@ -82,24 +118,6 @@ internal sealed class DocumentComposer
         return builder.Build();
     }
 
-    private static (double Width, double Height) GetPageSize(PageSizeEnum size)
-    {
-        return size switch
-        {
-            PageSizeEnum.A0 => (2383.94, 3370.39),
-            PageSizeEnum.A1 => (1683.78, 2383.94),
-            PageSizeEnum.A2 => (1190.55, 1683.78),
-            PageSizeEnum.A3 => (841.89, 1190.55),
-            PageSizeEnum.A4 => (595.275, 841.89),
-            PageSizeEnum.A5 => (419.53, 595.275),
-            PageSizeEnum.A6 => (297.64, 419.53),
-            PageSizeEnum.B5 => (498.9, 708.66),
-            PageSizeEnum.Ledger => (792, 1224),
-            PageSizeEnum.Legal => (612, 1008),
-            _ => (612, 792),
-        };
-    }
-
     private ImageData GetImage(string path)
     {
         if (!images.TryGetValue(path, out var image))
@@ -121,13 +139,6 @@ internal sealed class DocumentComposer
         return new ImageItem(GetImage(element.ImagePath), contentWidth, maxHeight, element.ImageAlignment);
     }
 
-    private static TextStyle ElementStyle(PageContentElement element)
-    {
-        return TextStyle.FromFontStyle(element.FontStyle, element.FontFamily, element.FontSize,
-            element.LineSpacingInPt, true, element.SpacingBeforeInPt, element.SpacingAfterInPt,
-            element.ParagraphAlignment);
-    }
-
     private IEnumerable<LayoutItem> CreateParagraph(PageContentElement element)
     {
         if (string.IsNullOrWhiteSpace(element.Text)) return [];
@@ -139,8 +150,13 @@ internal sealed class DocumentComposer
         {
             var first = i == 0;
             var last = i == lines.Count - 1;
-            items.Add(new TextLineItem(style, lines[i], contentWidth, first ? style.SpaceBefore : 0,
-                last ? style.SpaceAfter : 0, !last));
+            items.Add(new TextLineItem(
+                style,
+                lines[i],
+                contentWidth,
+                first ? style.SpaceBefore : 0,
+                last ? style.SpaceAfter : 0,
+                !last));
         }
 
         return items;
@@ -186,10 +202,14 @@ internal sealed class DocumentComposer
         if (logo)
         {
             if (string.IsNullOrWhiteSpace(element.ImagePath) || !File.Exists(element.ImagePath))
+            {
                 throw new FileNotFoundException(
                     "Path to header graphics was empty or the file does not exist: " + element.ImagePath);
+            }
 
-            cells.Add(new ImageCell(GetImage(element.ImagePath), Units.CmToPt(element.ImageHeightInCm),
+            cells.Add(new ImageCell(
+                GetImage(element.ImagePath),
+                Units.CmToPt(element.ImageHeightInCm),
                 Units.CmToPt(widths[index++])));
         }
 
@@ -197,8 +217,14 @@ internal sealed class DocumentComposer
 
         if (pageNumber)
         {
-            var numberStyle = TextStyle.FromFontStyle(element.FontStyle, element.FontFamily, element.FontSize,
-                element.LineSpacingInPt, true, element.SpacingBeforeInPt, element.SpacingAfterInPt,
+            var numberStyle = TextStyle.FromFontStyle(
+                element.FontStyle,
+                element.FontFamily,
+                element.FontSize,
+                element.LineSpacingInPt,
+                true,
+                element.SpacingBeforeInPt,
+                element.SpacingAfterInPt,
                 ParagraphAlignmentEnum.Right);
             cells.Add(new PageNumberCell(numberStyle, Units.CmToPt(widths[index])));
         }
@@ -219,8 +245,10 @@ internal sealed class DocumentComposer
         {
             tableWidth += Units.CmToPt(column.WidthInCm);
             if (tableWidth > contentWidth)
+            {
                 throw new Exception(
                     $"Page allows table to be {Format(Units.PtToCm(contentWidth))} cm wide. Provided table's width is larger than that, {Format(Units.PtToCm(tableWidth))} cm.");
+            }
         }
 
         var rows = new List<(List<TableColumnDefinition> Columns, List<string> Data)>();
@@ -250,11 +278,20 @@ internal sealed class DocumentComposer
         target.AddRange(items);
     }
 
-    private List<Cell> CreateCells(List<TableColumnDefinition> columns, List<string> data,
-        List<TableColumnDefinition> widthSource, TableStyle style)
+    private List<Cell> CreateCells(
+        List<TableColumnDefinition> columns,
+        List<string> data,
+        List<TableColumnDefinition> widthSource,
+        TableStyle style)
     {
-        var textStyle = TextStyle.FromFontStyle(style.FontStyle, style.FontFamily, style.FontSizeInPt,
-            style.LineSpacingInPt, false, style.SpacingBeforeInPt, style.SpacingAfterInPt,
+        var textStyle = TextStyle.FromFontStyle(
+            style.FontStyle,
+            style.FontFamily,
+            style.FontSizeInPt,
+            style.LineSpacingInPt,
+            false,
+            style.SpacingBeforeInPt,
+            style.SpacingAfterInPt,
             ParagraphAlignmentEnum.Left);
         var cells = new List<Cell>();
 
@@ -265,8 +302,11 @@ internal sealed class DocumentComposer
             {
                 case TableColumnType.Image:
                     if (string.IsNullOrWhiteSpace(data[i]) || !File.Exists(data[i]))
+                    {
                         throw new FileNotFoundException(
                             "Path to header graphics was empty or the file does not exist.");
+                    }
+
                     cells.Add(new ImageCell(GetImage(data[i]), Units.CmToPt(columns[i].HeightInCm), width));
                     break;
                 case TableColumnType.PageNum:
@@ -284,9 +324,6 @@ internal sealed class DocumentComposer
 
         return cells;
     }
-
-    private static string Format(double value) =>
-        Math.Round(value, 2).ToString(CultureInfo.InvariantCulture);
 
     private List<ComposedPage> Paginate()
     {

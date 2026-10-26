@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UglyToad.PdfPig.Core;
 using UglyToad.PdfPig.Writer;
 
+#pragma warning disable SA1402
 namespace Frends.Pdf.Create.Helpers;
 
 /// <summary>Font selection for a piece of text.</summary>
@@ -76,3 +77,4 @@ internal sealed class FontProvider
         return width;
     }
 }
+#pragma warning restore SA1402

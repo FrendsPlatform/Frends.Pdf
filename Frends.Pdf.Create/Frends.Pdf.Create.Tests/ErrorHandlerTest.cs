@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Threading;
 using Frends.Pdf.Create.Definitions;
@@ -11,52 +11,8 @@ internal class ErrorHandlerTest
 {
     private const string CustomErrorMessage = "CustomErrorMessage";
 
-    private static readonly string _folder =
+    private static readonly string Folder =
         Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"../../../TestOutput");
-
-    private Input DefaultInput()
-    {
-        return new Input
-        {
-            Directory = "/nonexistent/path/that/does/not/exist",
-            FileName = "test.pdf",
-            FileExistsAction = FileExistsActionEnum.Error,
-            Content = new DocumentContent
-            {
-                Contents = new[]
-                {
-                    new PageContentElement
-                    {
-                        ContentType = ElementType.Paragraph,
-                        FontFamily = "Times New Roman",
-                        FontSize = 11,
-                        FontStyle = FontStyleEnum.Regular,
-                        LineSpacingInPt = 11,
-                        ParagraphAlignment = ParagraphAlignmentEnum.Left,
-                        SpacingAfterInPt = 0,
-                        SpacingBeforeInPt = 8,
-                        Text = "Hello"
-                    }
-                }
-            }
-        };
-    }
-
-    private Options DefaultOptions()
-    {
-        return new Options
-        {
-            ThrowErrorOnFailure = true,
-            ErrorMessageOnFailure = string.Empty,
-            CustomFontsLocation = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../Files"),
-            MarginBottomInCm = 2,
-            MarginLeftInCm = 2.5,
-            MarginRightInCm = 2.5,
-            MarginTopInCm = 2,
-            Orientation = PageOrientationEnum.Portrait,
-            Size = PageSizeEnum.A4
-        };
-    }
 
     [Test]
     public void Should_Throw_Error_When_ThrowErrorOnFailure_Is_True()
@@ -97,5 +53,49 @@ internal class ErrorHandlerTest
         Assert.That(result.Success, Is.False);
         Assert.That(result.Error, Is.Not.Null);
         Assert.That(result.Error.Message, Contains.Substring(CustomErrorMessage));
+    }
+
+    private Input DefaultInput()
+    {
+        return new Input
+        {
+            Directory = "/nonexistent/path/that/does/not/exist",
+            FileName = "test.pdf",
+            FileExistsAction = FileExistsActionEnum.Error,
+            Content = new DocumentContent
+            {
+                Contents = new[]
+                {
+                    new PageContentElement
+                    {
+                        ContentType = ElementType.Paragraph,
+                        FontFamily = "Times New Roman",
+                        FontSize = 11,
+                        FontStyle = FontStyleEnum.Regular,
+                        LineSpacingInPt = 11,
+                        ParagraphAlignment = ParagraphAlignmentEnum.Left,
+                        SpacingAfterInPt = 0,
+                        SpacingBeforeInPt = 8,
+                        Text = "Hello",
+                    },
+                },
+            },
+        };
+    }
+
+    private Options DefaultOptions()
+    {
+        return new Options
+        {
+            ThrowErrorOnFailure = true,
+            ErrorMessageOnFailure = string.Empty,
+            CustomFontsLocation = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "../../../Files"),
+            MarginBottomInCm = 2,
+            MarginLeftInCm = 2.5,
+            MarginRightInCm = 2.5,
+            MarginTopInCm = 2,
+            Orientation = PageOrientationEnum.Portrait,
+            Size = PageSizeEnum.A4,
+        };
     }
 }
