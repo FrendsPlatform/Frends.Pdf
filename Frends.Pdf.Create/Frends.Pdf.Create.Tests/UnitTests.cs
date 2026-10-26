@@ -198,8 +198,8 @@ with some tab
         var letters = page.Letters.Where(l => l.Value != " ").ToList();
 
         Assert.AreEqual(80 * word.Length, letters.Count);
-        Assert.GreaterOrEqual(letters.Min(l => l.GlyphRectangle.Left), left - 1);
-        Assert.LessOrEqual(letters.Max(l => l.GlyphRectangle.Right), right + 1);
+        Assert.GreaterOrEqual(letters.Min(l => l.BoundingBox.Left), left - 1);
+        Assert.LessOrEqual(letters.Max(l => l.BoundingBox.Right), right + 1);
         Assert.Greater(letters.Select(l => Math.Round(l.StartBaseLine.Y)).Distinct().Count(), 1);
     }
 

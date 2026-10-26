@@ -129,7 +129,7 @@ internal sealed class DocumentComposer
         return image;
     }
 
-    private LayoutItem CreateImage(PageContentElement element)
+    private ImageItem CreateImage(PageContentElement element)
     {
         if (!File.Exists(element.ImagePath))
             throw new FileNotFoundException("Image not found from path: " + element.ImagePath);
@@ -139,7 +139,7 @@ internal sealed class DocumentComposer
         return new ImageItem(GetImage(element.ImagePath), contentWidth, maxHeight, element.ImageAlignment);
     }
 
-    private IEnumerable<LayoutItem> CreateParagraph(PageContentElement element)
+    private List<LayoutItem> CreateParagraph(PageContentElement element)
     {
         if (string.IsNullOrWhiteSpace(element.Text)) return [];
 

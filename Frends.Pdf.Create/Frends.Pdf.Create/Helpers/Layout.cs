@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -189,7 +189,7 @@ internal static class TextLayout
     }
 
 #pragma warning disable SA1202
-    private static IEnumerable<string> WrapLine(FontProvider fonts, TextStyle style, string line, double width)
+    private static List<string> WrapLine(FontProvider fonts, TextStyle style, string line, double width)
     {
         var lines = new List<string>();
         var current = new StringBuilder();
