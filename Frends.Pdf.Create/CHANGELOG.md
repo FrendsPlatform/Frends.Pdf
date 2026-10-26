@@ -1,5 +1,11 @@
 # Changelog
 
+## [3.2.0] - 2026-10-26
+
+### Changed
+
+- Replaced PDFsharp/MigraDoc with PdfPig 0.1.16 for creating documents.
+
 ## [3.1.0] - 2026-09-22
 
 ### Fixed

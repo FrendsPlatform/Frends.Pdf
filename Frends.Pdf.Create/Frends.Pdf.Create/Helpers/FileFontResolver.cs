@@ -4,12 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Frends.Pdf.Create.Definitions;
-using MigraDoc;
-using PdfSharp.Fonts;
 
 namespace Frends.Pdf.Create.Helpers;
 
-internal class FileFontResolver : IFontResolver
+internal static class FileFontResolver
 {
     private static readonly List<FontMetadata> Fonts;
     private static string defaultFamilyName;
@@ -24,7 +22,6 @@ internal class FileFontResolver : IFontResolver
     internal static void Setup(string defaultName = BundledFont, string customFontsLocation = null)
     {
         defaultFamilyName = string.IsNullOrWhiteSpace(defaultName) ? BundledFont : defaultName;
-        PredefinedFontsAndChars.ErrorFontName = defaultFamilyName;
 
         var fontsLocations = GetFontsLocations(customFontsLocation);
         List<string> fontsPaths = [];
@@ -51,8 +48,8 @@ internal class FileFontResolver : IFontResolver
         }
     }
 
-    /// <summary>Resolves font typeface information for a given family name and style.</summary>
-    public FontResolverInfo ResolveTypeface(string familyName, bool isBold, bool isItalic)
+    /// <summary>Resolves the font file for a given family name and style.</summary>
+    internal static FontMetadata Resolve(string familyName, bool isBold, bool isItalic)
     {
         var font =
             // try to get the font we are looking for
@@ -77,11 +74,11 @@ internal class FileFontResolver : IFontResolver
                 f.Name.Equals(defaultFamilyName, StringComparison.CurrentCultureIgnoreCase))
             ?? new FontMetadata(BundledFont);
 
-        return new FontResolverInfo(font.FullPath);
+        return font;
     }
 
     /// <summary>Returns the raw font bytes for the given font file path.</summary>
-    public byte[] GetFont(string path)
+    internal static byte[] GetFont(string path)
     {
         try
         {

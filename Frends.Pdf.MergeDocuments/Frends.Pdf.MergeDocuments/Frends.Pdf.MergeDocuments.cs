@@ -1,9 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using System.Threading;using Frends.Pdf.MergeDocuments.Definitions;
-using Frends.Pdf.MergeDocuments.Helpers;
+using System.Linq;
+using System.Threading;
+using Frends.Pdf.MergeDocuments.Definitions;
+using UglyToad.PdfPig.Writer;
 
 namespace Frends.Pdf.MergeDocuments;
 
@@ -39,24 +41,9 @@ public static class Pdf
             var dir = Path.GetDirectoryName(input.DestinationFilePath);
             if (!string.IsNullOrEmpty(dir)) Directory.CreateDirectory(dir);
 
-            var args = new List<string> { "--empty", "--pages" };
-            foreach (var filePath in input.InputFilePaths)
-            {
-                args.Add(filePath);
-                args.Add("1-z");
-            }
-
-            args.Add("--");
-            args.Add(input.DestinationFilePath);
-
-            // QPDF repairs damaged files and reports that as a warning, but still writes the output.
-            var exitCode = QpdfNative.Run(args);
-            if (exitCode != QpdfNative.ExitSuccess && exitCode != QpdfNative.ExitWarnings)
-            {
-                if (File.Exists(input.DestinationFilePath)) File.Delete(input.DestinationFilePath);
-                throw new Exception($"QPDF failed to merge the documents (exit code {exitCode}). See the process error output for details.");
-            }
-
+            var documents = input.InputFilePaths.Select(File.ReadAllBytes).ToList();
+            var merged = PdfMerger.Merge(documents, null);
+            File.WriteAllBytes(input.DestinationFilePath, merged);
             return new Result { Success = true, Error = null, };
         }
         catch (Exception e) when (e is not OperationCanceledException)

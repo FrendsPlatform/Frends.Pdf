@@ -1,8 +1,9 @@
-﻿using System;
+using System;
 using System.IO;
+using System.Linq;
 using Frends.Pdf.Create.Definitions;
 using NUnit.Framework;
-using PdfSharp.Pdf.IO;
+using UglyToad.PdfPig;
 
 namespace Frends.Pdf.Create.Tests;
 
@@ -164,11 +165,50 @@ with some tab
 
         Assert.IsTrue(result.Success);
 
-        using var pdfDocument = PdfReader.Open(_destinationFullPath, PdfDocumentOpenMode.ReadOnly);
-        var page = pdfDocument.Pages[0];
+        using var pdfDocument = PdfDocument.Open(_destinationFullPath);
+        var page = pdfDocument.GetPage(1);
 
         Assert.Greater(page.Width, page.Height,
             "Expected a landscape page (wider than tall) when Orientation is set to Landscape.");
+    }
+
+    [Test]
+    public void Create_RendersNonLatin1CharactersTest()
+    {
+        _input.FileExistsAction = FileExistsActionEnum.Overwrite;
+        const string text = "Abc \u043a\u043e\u0434 \u00f6 \u0105\u0119 \u03a9\u03c0 \u00e5\u00e4\u00f6\u00c5\u00c4\u00d6 \u0161\u017e\u0160\u017d \u0401\u0451\u042f\u044b";
+        _paragraphContent.Text = text;
+
+        var result = CallCreatePdf([_paragraphContent]);
+
+        Assert.IsTrue(result.Success);
+
+        using var pdfDocument = PdfDocument.Open(_destinationFullPath);
+        var extracted = string.Concat(pdfDocument.GetPage(1).Letters.Select(l => l.Value));
+        Assert.AreEqual(text, extracted);
+    }
+
+    [Test]
+    public void Create_WrapsNonLatin1TextInsideContentAreaTest()
+    {
+        _input.FileExistsAction = FileExistsActionEnum.Overwrite;
+        const string word = "\u041f\u0440\u0438\u0432\u0435\u0442";
+        _paragraphContent.Text = string.Join(" ", Enumerable.Repeat(word, 80));
+
+        var result = CallCreatePdf([_paragraphContent]);
+
+        Assert.IsTrue(result.Success);
+
+        using var pdfDocument = PdfDocument.Open(_destinationFullPath);
+        var page = pdfDocument.GetPage(1);
+        var left = 2.5 / 2.54 * 72;
+        var right = page.Width - left;
+        var letters = page.Letters.Where(l => l.Value != " ").ToList();
+
+        Assert.AreEqual(80 * word.Length, letters.Count);
+        Assert.GreaterOrEqual(letters.Min(l => l.GlyphRectangle.Left), left - 1);
+        Assert.LessOrEqual(letters.Max(l => l.GlyphRectangle.Right), right + 1);
+        Assert.Greater(letters.Select(l => Math.Round(l.StartBaseLine.Y)).Distinct().Count(), 1);
     }
 
     [Test]
@@ -317,7 +357,8 @@ with some tab
         };
         var options = new Options
         {
-            ThrowErrorOnFailure = false
+            ThrowErrorOnFailure = false,
+            Size = PageSizeEnum.A4
         };
 
         Pdf.Create(new Input

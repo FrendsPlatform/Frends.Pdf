@@ -2,8 +2,8 @@ using System;
 using System.IO;
 using System.Threading;
 using Frends.Pdf.MergeDocuments.Definitions;
-using Frends.Pdf.MergeDocuments.Helpers;
 using NUnit.Framework;
+using UglyToad.PdfPig;
 
 namespace Frends.Pdf.MergeDocuments.Tests;
 
@@ -111,15 +111,7 @@ public class UnitTests
 
     private static int PageCount(string path)
     {
-        var jsonPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid() + ".json");
-        try
-        {
-            QpdfNative.Run(["--json", "--json-key=pages", path, jsonPath]);
-            return System.Text.RegularExpressions.Regex.Matches(File.ReadAllText(jsonPath), "\"pageposfrom1\"").Count;
-        }
-        finally
-        {
-            File.Delete(jsonPath);
-        }
+        using var document = PdfDocument.Open(path);
+        return document.NumberOfPages;
     }
 }

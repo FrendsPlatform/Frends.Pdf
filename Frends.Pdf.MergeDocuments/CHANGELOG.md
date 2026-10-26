@@ -2,7 +2,7 @@
 
 ## [1.2.0] - 2026-10-26
 ### Changed
-- Replaced PdfSharpCore 1.3.67 with QPDF 11.9.1 (Apache-2.0, via QPdf.RuntimeLibraries) for merging; it tolerates and repairs damaged PDFs. Supports win-x64 and linux-x64.
+- Replaced PdfSharpCore 1.3.67 with PdfPig 0.1.16 for merging.
 
 ## [1.1.0] - 2026-08-14
 ### Changed
