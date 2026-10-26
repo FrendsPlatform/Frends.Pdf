@@ -1,10 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using System.Threading;
-using Frends.Pdf.MergeDocuments.Definitions;
-using PdfSharpCore.Pdf;
-using PdfSharpCore.Pdf.IO;
+using System.Threading;using Frends.Pdf.MergeDocuments.Definitions;
+using Frends.Pdf.MergeDocuments.Helpers;
 
 namespace Frends.Pdf.MergeDocuments;
 
@@ -32,19 +31,31 @@ public static class Pdf
             if (Path.GetExtension(input.DestinationFilePath) != ".pdf")
                 throw new Exception("Destination file must have .pdf extension");
 
-            using var outputDocument = new PdfDocument();
             foreach (var filePath in input.InputFilePaths)
             {
-                using var inputDocument = PdfReader.Open(filePath, PdfDocumentOpenMode.Import);
-                foreach (var page in inputDocument.Pages)
-                {
-                    outputDocument.AddPage(page);
-                }
+                if (!File.Exists(filePath)) throw new FileNotFoundException("Input file not found", filePath);
             }
 
             var dir = Path.GetDirectoryName(input.DestinationFilePath);
             if (!string.IsNullOrEmpty(dir)) Directory.CreateDirectory(dir);
-            outputDocument.Save(input.DestinationFilePath);
+
+            var args = new List<string> { "--empty", "--pages" };
+            foreach (var filePath in input.InputFilePaths)
+            {
+                args.Add(filePath);
+                args.Add("1-z");
+            }
+
+            args.Add("--");
+            args.Add(input.DestinationFilePath);
+
+            // QPDF repairs damaged files and reports that as a warning, but still writes the output.
+            var exitCode = QpdfNative.Run(args);
+            if (exitCode != QpdfNative.ExitSuccess && exitCode != QpdfNative.ExitWarnings)
+            {
+                if (File.Exists(input.DestinationFilePath)) File.Delete(input.DestinationFilePath);
+                throw new Exception($"QPDF failed to merge the documents (exit code {exitCode}). See the process error output for details.");
+            }
 
             return new Result { Success = true, Error = null, };
         }
