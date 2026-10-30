@@ -1,8 +1,8 @@
 # Changelog
 
-## [1.2.0] - 2026-10-26
+## [2.0.0] - 2026-10-26
 ### Changed
-- Replaced PdfSharpCore 1.3.67 with PdfPig 0.1.16 for merging.
+- **[Breaking Change]** Replaced PdfSharpCore 1.3.67 with PdfPig 0.1.16 for merging.
 
 ## [1.1.0] - 2026-08-14
 ### Changed
