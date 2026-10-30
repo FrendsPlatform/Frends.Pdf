@@ -1,10 +1,11 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using Frends.Pdf.MergeDocuments.Definitions;
-using PdfSharpCore.Pdf;
-using PdfSharpCore.Pdf.IO;
+using UglyToad.PdfPig.Writer;
 
 namespace Frends.Pdf.MergeDocuments;
 
@@ -32,20 +33,17 @@ public static class Pdf
             if (Path.GetExtension(input.DestinationFilePath) != ".pdf")
                 throw new Exception("Destination file must have .pdf extension");
 
-            using var outputDocument = new PdfDocument();
             foreach (var filePath in input.InputFilePaths)
             {
-                using var inputDocument = PdfReader.Open(filePath, PdfDocumentOpenMode.Import);
-                foreach (var page in inputDocument.Pages)
-                {
-                    outputDocument.AddPage(page);
-                }
+                if (!File.Exists(filePath)) throw new FileNotFoundException("Input file not found", filePath);
             }
 
             var dir = Path.GetDirectoryName(input.DestinationFilePath);
             if (!string.IsNullOrEmpty(dir)) Directory.CreateDirectory(dir);
-            outputDocument.Save(input.DestinationFilePath);
 
+            var documents = input.InputFilePaths.Select(File.ReadAllBytes).ToList();
+            var merged = PdfMerger.Merge(documents, null);
+            File.WriteAllBytes(input.DestinationFilePath, merged);
             return new Result { Success = true, Error = null, };
         }
         catch (Exception e) when (e is not OperationCanceledException)

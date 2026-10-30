@@ -3,6 +3,7 @@ using System.IO;
 using System.Threading;
 using Frends.Pdf.MergeDocuments.Definitions;
 using NUnit.Framework;
+using UglyToad.PdfPig;
 
 namespace Frends.Pdf.MergeDocuments.Tests;
 
@@ -46,7 +47,7 @@ public class UnitTests
     {
         var input = DefaultInput;
         var result = Pdf.MergeDocuments(input, DefaultOptions, CancellationToken.None);
-        Assert.That(FilesHaveSameSize(ExpectedOutputPath, input.DestinationFilePath), Is.True);
+        Assert.That(FilesHaveSamePageCount(ExpectedOutputPath, input.DestinationFilePath), Is.True);
         Assert.That(result.Success, Is.True);
     }
 
@@ -103,10 +104,14 @@ public class UnitTests
         Assert.That(ex!.Message, Is.EqualTo("Test message"));
     }
 
-    private static bool FilesHaveSameSize(string path1, string path2)
+    private static bool FilesHaveSamePageCount(string path1, string path2)
     {
-        var f1 = new FileInfo(path1);
-        var f2 = new FileInfo(path2);
-        return f1.Length == f2.Length;
+        return PageCount(path1) == PageCount(path2);
+    }
+
+    private static int PageCount(string path)
+    {
+        using var document = PdfDocument.Open(path);
+        return document.NumberOfPages;
     }
 }
