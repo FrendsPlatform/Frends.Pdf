@@ -1,4 +1,4 @@
-﻿namespace Frends.Pdf.MergeDocuments.Definitions;
+namespace Frends.Pdf.MergeDocuments.Definitions;
 
 /// <summary>
 /// Result of the task.

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Frends.Pdf.MergeDocuments.Definitions;
 
 namespace Frends.Pdf.MergeDocuments.Helpers;

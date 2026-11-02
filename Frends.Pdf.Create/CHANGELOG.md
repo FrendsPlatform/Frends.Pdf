@@ -4,7 +4,9 @@
 
 ### Changed
 
-- Replaced PDFsharp/MigraDoc with PdfPig 0.1.16 for creating documents.
+- [Breaking Change] Replaced PDFsharp/MigraDoc with PdfPig 0.1.16 for creating documents.
+- [Breaking Change] Image inputs are limited to PNG and JPEG.
+- [Breaking Change] Text wrapping, layout, and pagination are handled by a custom layout engine. Line wrapping, table layout, and page breaks may differ from previous output.
 
 ## [3.1.0] - 2026-09-22
 

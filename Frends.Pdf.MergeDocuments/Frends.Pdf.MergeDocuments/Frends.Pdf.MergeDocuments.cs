@@ -1,10 +1,11 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
 using System.Threading;
 using Frends.Pdf.MergeDocuments.Definitions;
+using UglyToad.PdfPig;
+using UglyToad.PdfPig.Actions;
+using UglyToad.PdfPig.Outline.Destinations;
 using UglyToad.PdfPig.Writer;
 
 namespace Frends.Pdf.MergeDocuments;
@@ -41,14 +42,46 @@ public static class Pdf
             var dir = Path.GetDirectoryName(input.DestinationFilePath);
             if (!string.IsNullOrEmpty(dir)) Directory.CreateDirectory(dir);
 
-            var documents = input.InputFilePaths.Select(File.ReadAllBytes).ToList();
-            var merged = PdfMerger.Merge(documents, null);
-            File.WriteAllBytes(input.DestinationFilePath, merged);
+            using var outputDocument = new PdfDocumentBuilder();
+            var basePageNumber = 0;
+            foreach (var filePath in input.InputFilePaths)
+            {
+                using var inputDocument = PdfDocument.Open(filePath);
+                for (var pageNumber = 1; pageNumber <= inputDocument.NumberOfPages; pageNumber++)
+                {
+                    outputDocument.AddPage(
+                        inputDocument,
+                        pageNumber,
+                        new PdfDocumentBuilder.AddPageOptions
+                        {
+                            CopyLinkFunc = action => CopyLink(action, basePageNumber),
+                        });
+                }
+
+                basePageNumber += inputDocument.NumberOfPages;
+            }
+
+            File.WriteAllBytes(input.DestinationFilePath, outputDocument.Build());
+
             return new Result { Success = true, Error = null, };
         }
         catch (Exception e) when (e is not OperationCanceledException)
         {
             return Helpers.ErrorHandler.Handle(e, options.ThrowErrorOnFailure, options.ErrorMessageOnFailure);
         }
+    }
+
+    private static PdfAction CopyLink(PdfAction action, int basePageNumber)
+    {
+        if (action is GoToRAction) return action;
+        if (action is not GoToAction goToAction) return action;
+
+        var destination = goToAction.Destination;
+        var mergedDestination = new ExplicitDestination(
+            basePageNumber + destination.PageNumber,
+            destination.Type,
+            destination.Coordinates);
+
+        return new GoToAction(mergedDestination);
     }
 }
