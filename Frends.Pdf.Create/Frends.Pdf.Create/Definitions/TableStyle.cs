@@ -1,4 +1,4 @@
-﻿namespace Frends.Pdf.Create.Definitions;
+namespace Frends.Pdf.Create.Definitions;
 
 /// <summary>
 /// Class for table styles.

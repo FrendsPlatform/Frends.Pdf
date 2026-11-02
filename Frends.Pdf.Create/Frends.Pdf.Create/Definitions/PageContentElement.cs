@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace Frends.Pdf.Create.Definitions;
@@ -63,7 +63,6 @@ public class PageContentElement
     [DefaultValue(14)]
     public int LineSpacingInPt { get; set; }
 
-
     /// <summary>
     /// Text alignment.
     /// </summary>
@@ -72,7 +71,6 @@ public class PageContentElement
     [DefaultValue(ParagraphAlignmentEnum.Left)]
     [DisplayName("Alignment")]
     public ParagraphAlignmentEnum ParagraphAlignment { get; set; }
-
 
     /// <summary>
     /// Image alignment.

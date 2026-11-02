@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace Frends.Pdf.Create.Definitions;
@@ -75,7 +75,6 @@ public class Options
 
     /// <summary>
     /// Font family name that will be used if a specific font couldn't be resolved.
-    /// This font will be used as an ErrorFontName as well.
     /// Using bundled Victor Mono font if nothing is provided.
     /// </summary>
     /// <example>Arial</example>

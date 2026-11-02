@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.4.0] - 2026-10-26
+
+### Changed
+
+- Updated PdfPig to version 0.1.16.
+
 ## [1.3.0] - 2026-08-17
 
 ### Changed

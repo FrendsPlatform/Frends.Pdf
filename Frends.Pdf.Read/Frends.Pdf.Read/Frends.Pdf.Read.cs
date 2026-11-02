@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading;
@@ -75,8 +75,8 @@ public static class Pdf
                         {
                             Format = format,
                             Bytes = bytes,
-                            Width = image.Bounds.Width,
-                            Height = image.Bounds.Height,
+                            Width = image.BoundingBox.Width,
+                            Height = image.BoundingBox.Height,
                         });
                     }
                 }
